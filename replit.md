@@ -1,18 +1,17 @@
-# OpenAI Chat Application
+# PropFirm - Funded Trading Platform
 
 ## Overview
 
-This is a complete chat application with both a web interface and REST API that provides access to OpenAI GPT models using the user's own OpenAI API key stored in environment variables.
+A modern prop trading firm platform with user authentication, AI-powered chat capabilities, and a futuristic design. The platform allows traders to access funded accounts and AI assistance for trading decisions.
 
 The application features:
-- **Homepage**: Modern landing page with hero section, feature cards, and floating chat widget
-- **Full Chat Interface**: Dedicated chat page with real-time streaming responses
-- **Floating Chat Widget**: Small assistant in the corner of the homepage for quick conversations
-- **REST API**: Programmatic access for integration with other applications
+- **Landing Page**: Modern prop-firm website with dark theme, neon green accents, and animated particles
+- **User Authentication**: Secure signup/login system with PostgreSQL database storage
+- **AI Chat Interface**: OpenAI GPT integration for trading assistance (protected by authentication)
+- **REST API**: Programmatic access for integration with trading platforms
 - **Multi-Model Support**: Choose from 6 different OpenAI models (GPT-4o, GPT-4.1 series)
-- **Streaming Responses**: See AI responses appear in real-time as they're generated
-- **Token Usage Tracking**: Monitor prompt and completion tokens for cost tracking
-- **Conversation History**: Maintain context across multiple messages
+- **Streaming Responses**: Real-time AI responses with word-by-word display
+- **Token Usage Tracking**: Monitor API usage and costs
 - **CORS Enabled**: Ready for cross-origin requests from web applications
 
 ## User Preferences
@@ -28,116 +27,265 @@ Preferred communication style: Simple, everyday language.
 
 ### Backend Framework
 - **Technology**: Flask (Python web framework)
-- **Rationale**: Lightweight and straightforward for building REST APIs with minimal overhead
+- **Database**: PostgreSQL with SQLAlchemy ORM
+- **Authentication**: Flask-Login with session-based auth
+- **Security**: CSRF protection with Flask-WTF, password hashing with Werkzeug
 - **Key Features**:
-  - Simple routing system for HTTP endpoints
-  - Built-in JSON response handling
-  - Easy integration with OpenAI Python SDK
-
-### Cross-Origin Resource Sharing (CORS)
-- **Implementation**: Flask-CORS extension
-- **Configuration**: Enabled globally for all routes
-- **Rationale**: Allows the API to be consumed by frontend applications hosted on different domains, making it suitable for web-based chat interfaces
-
-### API Client Architecture
-- **Client Library**: OpenAI Python SDK
-- **Configuration Method**: Environment variable-based configuration
-  - API key injected via `OPENAI_API_KEY_CYB_SEC`
-- **Rationale**: Uses direct OpenAI API access with user's own API key for secure, production-ready deployment
-
-### Model Support
-- **Available Models**: 6 models including GPT-4o, GPT-4.1 series, and GPT-3.5
-  - GPT-4o series: gpt-4o, gpt-4o-mini
-  - GPT-4.1 series: gpt-4.1, gpt-4.1-mini, gpt-4.1-nano
-  - Classic: gpt-3.5-turbo
-- **Default Model**: gpt-4o-mini (fast and affordable)
-- **Design Pattern**: Hardcoded model list with validation
-- **Rationale**: Provides controlled access to specific OpenAI models via direct API integration
-- **Model Selection**: Only includes models available with user's API tier (GPT-5 models require higher quota)
+  - RESTful API endpoints
+  - Session management
+  - Database models for user management
+  - OpenAI SDK integration
 
 ### Frontend Architecture
-- **Technology**: HTML5, CSS3, Vanilla JavaScript
-- **Design**: Modern teal-blue gradient theme with mobile-responsive layout
-- **Pages**:
-  - **Homepage** (`/`): Landing page with hero section, feature cards, floating chat widget, and contact footer
-  - **Full Chat** (`/chat`): Dedicated chat interface with model selector
-- **Chat Widget Features**:
-  - Floating button in bottom-right corner
-  - Popup chat interface with full streaming support
-  - Independent conversation history
-  - Buffered SSE parsing for reliable message delivery
-- **Full Chat Features**:
-  - Real-time streaming chat with word-by-word response display
-  - Model selector dropdown for choosing between 6 GPT models
-  - Conversation history with user/assistant message bubbles
-  - Typing indicators and smooth animations
+- **Design Theme**: Dark futuristic prop-firm style
+  - Dark background (#0a0e1a)
+  - Neon green accents (#00ff88)
+  - Glassmorphism effects with backdrop blur
+  - Animated particle backgrounds
+  - GSAP-powered scroll animations
+- **Technology Stack**:
+  - HTML5, CSS3, Vanilla JavaScript
+  - GSAP for animations
+  - Custom particle system with canvas
+  - Font Awesome icons
+  - Fully responsive design
 
-### Navigation
-- **Home**: Landing page with hero section and features
-- **Chat**: Full-screen chat interface
-- **Service**: Placeholder for future features
-- **Contacts**: Scrolls to contact footer with phone and email information
+### Pages & Routes
+
+#### Public Pages
+1. **Homepage** (`GET /`)
+   - Modern landing page (prop_firm.html)
+   - Hero section: "No Time Limit Prop Firm — Conquer the Market"
+   - Transparent navbar with glass effect
+   - Navigation: Home, How It Works, Programs, Support, Careers, Become a Partner
+   - Features: Start Challenge, Free Trial, Language Selector, Login/Register buttons
+   - Sections: How It Works, Programs, Stats, Support, Careers, Partner
+   - Animated particle background with trading symbols
+   - Cookie consent banner
+   - Social media icons (fixed bottom-left)
+   - Play button for intro video
+   - Scroll-to-explore indicator
+
+2. **Login Page** (`GET/POST /login`)
+   - Prop-firm themed login interface
+   - Email/phone and password authentication
+   - CSRF-protected form submissions
+   - Animated trading elements background
+   - Split layout with features showcase
+   - Link to signup page
+
+3. **Signup Page** (`GET/POST /signup`)
+   - Prop-firm themed registration interface
+   - Fields: name, email, phone, password
+   - CSRF-protected form submissions
+   - Benefits showcase section
+   - Animated background
+   - Link to login page
+
+4. **About Page** (`GET /about`)
+   - Company/platform information
+   - Prop-firm theme
+
+#### Protected Pages (Require Login)
+5. **Chat Interface** (`GET /chat`)
+   - AI-powered trading assistant
+   - Model selector dropdown
+   - Real-time streaming responses
+   - Conversation history
+   - Logout functionality
+   - User information display
+
+### Database Schema
+
+#### Users Table
+- `id`: Integer, Primary Key
+- `name`: String(100), Not Null
+- `email`: String(120), Unique, Not Null
+- `phone`: String(20), Not Null
+- `password_hash`: String(255), Not Null
+- `created_at`: DateTime, Default UTC Now
+
+### Authentication System
+- **Session-Based**: Flask-Login manages user sessions
+- **Password Security**: Werkzeug password hashing (bcrypt)
+- **CSRF Protection**: 
+  - Global CSRFProtect enabled
+  - Login/signup routes use @csrf.exempt with manual validation
+  - Form submissions require valid CSRF tokens
+  - JSON API requests exempted from CSRF
+  - Chat endpoints (@csrf.exempt) for API usage
+- **Protected Routes**: @login_required decorator on chat endpoints
+- **Redirect Logic**: Authenticated users redirected to chat, unauthenticated to login
 
 ### API Endpoints
-1. **Homepage** (`GET /`)
-   - Purpose: Serve the landing page with hero section, features, chat widget, and contact footer
-   - Returns: HTML page with hero section, features, floating chat assistant, and contact information
 
-2. **Full Chat** (`GET /chat`)
-   - Purpose: Serve the dedicated full-screen chat interface
-   - Returns: HTML page with full chat interface and model selector
+#### Authentication
+1. **Login** (`POST /login`)
+   - Accepts: form data or JSON
+   - Returns: redirect to chat (form) or JSON response
+   - CSRF: validated for form submissions
 
-3. **API Info** (`GET /api`)
-   - Purpose: API documentation and endpoint listing
-   - Returns: JSON with API metadata and available endpoints
+2. **Signup** (`POST /signup`)
+   - Accepts: form data or JSON
+   - Creates new user account
+   - CSRF: validated for form submissions
 
-4. **Health Check** (`GET /health`)
-   - Purpose: Service monitoring and availability verification
-   - Returns service status and integration type
+3. **Logout** (`GET /logout`)
+   - Ends user session
+   - Redirects to homepage
 
-5. **Model Listing** (`GET /models`)
-   - Purpose: Discover available models programmatically
-   - Returns array of model names and default model identifier
+#### AI Chat (Protected)
+4. **Chat Completion** (`POST /chat`)
+   - Requires authentication
+   - CSRF exempt (JSON API)
+   - Returns complete AI response with token stats
 
-6. **Chat Completion** (`POST /chat`)
-   - Purpose: Process chat messages and return AI-generated responses
-   - Supports conversation history and message formatting
-   - Returns complete response with token usage statistics
+5. **Streaming Chat** (`POST /chat/stream`)
+   - Requires authentication
+   - CSRF exempt (JSON API)
+   - Server-Sent Events for real-time streaming
 
-7. **Streaming Chat** (`POST /chat/stream`)
-   - Purpose: Real-time streaming responses using Server-Sent Events
-   - Streams token-by-token for improved user experience
-   - Handles conversation history and message formatting
+#### Utility
+6. **API Info** (`GET /api`)
+   - API documentation
 
-### Response Handling
-- **Standard Responses**: JSON-formatted data using Flask's `jsonify()`
-- **Streaming Support**: Uses `stream_with_context` for real-time streaming responses
-- **Rationale**: Streaming allows for better user experience with long responses, showing partial results as they're generated
+7. **Health Check** (`GET /health`)
+   - Service status monitoring
 
-### Error Handling
-- **Validation**: Request body validation for required fields (e.g., 'message' field)
-- **HTTP Status Codes**: Standard REST API status codes for success and error conditions
+8. **Model Listing** (`GET /models`)
+   - Available OpenAI models
 
-## External Dependencies
+### Static Assets
 
-### Third-Party Services
-- **OpenAI API** (Direct access)
-  - Purpose: Access to GPT language models
-  - Authentication: User's own OpenAI API key via environment variables
-  - Billing: Charged directly to user's OpenAI account
+#### CSS
+- `static/css/prop_firm.css`
+  - Complete styling for landing page
+  - Dark theme with CSS variables
+  - Glassmorphism card effects
+  - Responsive breakpoints (mobile, tablet, desktop)
+  - Animations and transitions
+  - Accessibility (prefers-reduced-motion)
 
-### Python Packages
-- **Flask**: Web framework for API server
-- **flask-cors**: CORS handling middleware
-- **openai**: Official OpenAI Python client library
+#### JavaScript
+- `static/js/prop_firm.js`
+  - GSAP ScrollTrigger animations
+  - Scroll effects and parallax
+  - Counter animations for stats
+  - Cookie consent handling
+  - Video modal functionality
+  - Mobile menu toggle
+  - Floating element animations
+  - Glassmorphism hover effects
 
-### Environment Configuration
-- **Required Environment Variables**:
-  - `OPENAI_API_KEY_CYB_SEC`: User's OpenAI API key for authentication
+- `static/js/particles.js`
+  - Custom particle system using Canvas API
+  - Floating numbers, currency symbols, trading pairs
+  - Connection lines between particles
+  - Pulse animations
+  - Performance optimized with requestAnimationFrame
+
+### Animation System
+- **GSAP**: Professional-grade JavaScript animation library
+  - ScrollTrigger for scroll-based animations
+  - Smooth parallax effects
+  - Card entrance animations
+  - Floating button animations
+  - Counter number animations
+- **CSS Animations**: 
+  - Glow effects on text
+  - Floating elements
+  - Pulse animations
+  - Smooth transitions
+- **Particle System**:
+  - Trading symbols (BTCUSD, EURUSD, etc.)
+  - Currency symbols ($, €, ¥, £)
+  - Numbers and mathematical elements
+  - Dynamic connections between particles
+
+### Design System
+
+#### Colors
+- `--neon-green`: #00ff88 (Primary accent)
+- `--dark-bg`: #0a0e1a (Background)
+- `--glass-bg`: rgba(255, 255, 255, 0.05) (Cards)
+- `--glass-border`: rgba(255, 255, 255, 0.1) (Borders)
+- `--text-primary`: #ffffff (Main text)
+- `--text-secondary`: #94a3b8 (Secondary text)
+
+#### Components
+- **Glassmorphism Cards**: backdrop-filter blur with transparent backgrounds
+- **Neon Glow Text**: Gradient text with glow shadows
+- **Glass Navbar**: Fixed transparent navigation with blur
+- **Gradient Buttons**: Neon green gradients with hover effects
+- **Floating Elements**: Animated currency/trading symbols
+- **Cookie Consent**: Glass card with Accept/Decline buttons
+- **Social Icons**: Fixed bottom-left with hover animations
+
+#### Responsive Design
+- **Desktop**: 1200px+ (full layout)
+- **Tablet**: 768-1199px (adjusted grids)
+- **Mobile**: <768px (single column, hamburger menu)
+
+### OpenAI Integration
+- **Available Models**: 6 models
+  - gpt-4o, gpt-4o-mini
+  - gpt-4.1, gpt-4.1-mini, gpt-4.1-nano
+  - gpt-3.5-turbo
+- **Default Model**: gpt-4o-mini
+- **API Key**: Environment variable `OPENAI_API_KEY_CYB_SEC`
+- **Features**: 
+  - Streaming responses
+  - Token usage tracking
+  - Conversation history
+  - Error handling
+
+### Security Features
+1. **CSRF Protection**: Flask-WTF with manual validation for forms
+2. **Password Hashing**: Werkzeug security functions
+3. **Session Management**: Flask-Login secure sessions
+4. **SQL Injection Prevention**: SQLAlchemy ORM parameterized queries
+5. **Environment Variables**: Sensitive data in env vars
+6. **HTTPS Ready**: Secure headers and cookie settings
+
+### External Dependencies
+
+#### Python Packages
+- Flask: Web framework
+- Flask-CORS: Cross-origin resource sharing
+- Flask-SQLAlchemy: Database ORM
+- Flask-Login: Session management
+- Flask-WTF: CSRF protection and forms
+- Werkzeug: Password hashing
+- OpenAI: Official Python SDK
+- Gunicorn: Production WSGI server
+- psycopg2-binary: PostgreSQL adapter
+- email-validator: Email validation
+
+#### Frontend Libraries (CDN)
+- Font Awesome 6.4.0: Icons
+- GSAP 3.12.2: Animations
+- ScrollTrigger: Scroll animations
 
 ### Infrastructure
-- **Hosting Platform**: Replit
+- **Hosting**: Replit
 - **Runtime**: Python 3.11
-- **Web Server**: Gunicorn (production WSGI server)
-- **Workers**: 2 workers with 120-second timeout
-- **API Access**: Direct connection to OpenAI API
+- **Web Server**: Gunicorn (2 workers, 120s timeout)
+- **Database**: PostgreSQL (Neon-backed)
+- **Port**: 5000 (bound to 0.0.0.0)
+
+### Environment Variables Required
+- `DATABASE_URL`: PostgreSQL connection string
+- `OPENAI_API_KEY_CYB_SEC`: OpenAI API key
+- `SECRET_KEY`: Flask session secret (auto-generated in dev)
+
+### Recent Updates (November 2025)
+- Complete redesign from simple chat app to prop-firm platform
+- Implemented user authentication with PostgreSQL
+- Created futuristic landing page with animations
+- Added glassmorphism design system
+- Integrated particle animation system
+- Built responsive login/signup pages
+- Added CSRF protection for forms
+- Integrated GSAP animations
+- Created cookie consent system
+- Added social media integration UI

@@ -3,260 +3,517 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - OpenAI Chat</title>
+    <title>Login - PropFirm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --neon-green: #00ff88;
+            --neon-green-dark: #00cc6a;
+            --dark-bg: #0a0e1a;
+            --dark-card: rgba(15, 23, 42, 0.7);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --gradient-glow: linear-gradient(135deg, var(--neon-green) 0%, #00ffcc 100%);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            position: relative;
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .navbar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
         }
 
-        .navbar-container {
-            max-width: 1200px;
+        .nav-container {
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .navbar-brand {
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
             text-decoration: none;
+            color: var(--text-primary);
         }
 
-        .navbar-menu {
+        .logo-text .glow {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-green);
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
             display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .navbar-menu a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
+            align-items: center;
+            gap: 0.5rem;
             transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 8px;
         }
 
-        .navbar-menu a:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .back-link:hover {
+            color: var(--neon-green);
         }
 
         .login-container {
-            flex: 1;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+            padding: 6rem 1rem 2rem;
+        }
+
+        .login-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            max-width: 1100px;
+            width: 100%;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .login-info {
+            padding: 2rem;
+        }
+
+        .login-info h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .glow-text {
+            background: var(--gradient-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 80px rgba(0, 255, 136, 0.5);
+        }
+
+        .login-info p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .info-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-glow);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #0a0e1a;
+            flex-shrink: 0;
+        }
+
+        .feature-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--neon-green);
+        }
+
+        .feature-text p {
+            font-size: 0.95rem;
+            margin: 0;
         }
 
         .login-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            width: 100%;
-            max-width: 450px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        .login-card h1 {
-            color: #1e293b;
-            font-size: 32px;
-            margin-bottom: 10px;
+        .login-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
             text-align: center;
         }
 
-        .login-card p {
-            color: #64748b;
+        .login-card .subtitle {
             text-align: center;
-            margin-bottom: 30px;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            color: #334155;
+            margin-bottom: 0.5rem;
             font-weight: 500;
-            margin-bottom: 8px;
-            font-size: 14px;
+            font-size: 0.95rem;
         }
 
-        .form-group input {
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .form-control {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 15px;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
             transition: all 0.3s ease;
         }
 
-        .form-group input:focus {
+        .form-control:focus {
             outline: none;
-            border-color: #06b6d4;
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+            border-color: var(--neon-green);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
-        .btn-primary {
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn-login {
             width: 100%;
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            color: white;
+            padding: 1rem;
+            background: var(--gradient-glow);
             border: none;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 12px;
+            color: #0a0e1a;
+            font-weight: 700;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
         }
 
-        .btn-primary:hover {
+        .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
         }
 
-        .btn-primary:active {
+        .btn-login:active {
             transform: translateY(0);
         }
 
         .divider {
             text-align: center;
-            margin: 25px 0;
-            color: #94a3b8;
-            font-size: 14px;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider span {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
         .signup-link {
             text-align: center;
-            color: #64748b;
-            font-size: 14px;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
         }
 
         .signup-link a {
-            color: #06b6d4;
+            color: var(--neon-green);
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .signup-link a:hover {
-            text-decoration: underline;
+            text-shadow: 0 0 10px var(--neon-green);
         }
 
         .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border: 1px solid;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
         }
 
         .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+            color: var(--neon-green);
         }
 
-        @media (max-width: 768px) {
+        .floating-stats {
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .floating-stats:nth-child(1) { top: 15%; left: 5%; animation-delay: 0s; }
+        .floating-stats:nth-child(2) { top: 70%; right: 10%; animation-delay: 2s; }
+        .floating-stats:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @media (max-width: 968px) {
+            .login-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .login-info {
+                text-align: center;
+            }
+
+            .info-features {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 480px) {
             .login-card {
-                padding: 30px 20px;
+                padding: 2rem 1.5rem;
             }
 
-            .navbar-menu {
-                gap: 15px;
-            }
-
-            .navbar-menu a {
-                font-size: 14px;
-                padding: 6px 12px;
+            .navbar {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="floating-stats">$125K</div>
+    <div class="floating-stats">+89%</div>
+    <div class="floating-stats">€50K</div>
+
     <nav class="navbar">
-        <div class="navbar-container">
-            <a href="/" class="navbar-brand">OpenAI Chat</a>
-            <ul class="navbar-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/#contacts">Contacts</a></li>
-            </ul>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-text">PROP<span class="glow">FIRM</span></span>
+            </a>
+            <a href="/" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Home</span>
+            </a>
         </div>
     </nav>
 
     <div class="login-container">
-        <div class="login-card">
-            <h1>Welcome Back</h1>
-            <p>Log in to access your AI chat assistant</p>
+        <div class="login-wrapper">
+            <div class="login-info">
+                <h1>
+                    Welcome to <br>
+                    <span class="glow-text">Your Trading Journey</span>
+                </h1>
+                <p>Access your funded trading account and start conquering the markets with our capital.</p>
+                
+                <div class="info-features">
+                    <div class="info-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>Real-Time Trading</h3>
+                            <p>Access live markets 24/7</p>
+                        </div>
+                    </div>
+                    <div class="info-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>Secure Platform</h3>
+                            <p>Bank-level encryption & security</p>
+                        </div>
+                    </div>
+                    <div class="info-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>24/7 Support</h3>
+                            <p>Expert assistance anytime</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            <div class="login-card">
+                <h2>Sign In</h2>
+                <p class="subtitle">Enter your credentials to access your account</p>
 
-            <form id="loginForm" method="POST" action="/login">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <div class="form-group">
-                    <label for="email_or_phone">Email or Phone Number</label>
-                    <input 
-                        type="text" 
-                        id="email_or_phone" 
-                        name="email_or_phone" 
-                        placeholder="Enter your email or phone number"
-                        required
-                    >
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="/login">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    
+                    <div class="form-group">
+                        <label for="email_or_phone">Email or Phone</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="email_or_phone" 
+                                name="email_or_phone" 
+                                placeholder="Enter your email or phone"
+                                required
+                                autocomplete="username"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        Sign In
+                        <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>or</span>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        placeholder="Enter your password"
-                        required
-                    >
+                <div class="signup-link">
+                    Don't have an account? <a href="/signup">Create Account</a>
                 </div>
-
-                <button type="submit" class="btn-primary">Log In</button>
-            </form>
-
-            <div class="divider">OR</div>
-
-            <div class="signup-link">
-                Don't have an account? <a href="/signup">Sign up for free</a>
             </div>
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
 </body>
 </html>
