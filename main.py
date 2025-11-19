@@ -22,6 +22,10 @@ AVAILABLE_MODELS = [
 
 @app.route('/', methods=['GET'])
 def index():
+    return render_template('home.html')
+
+@app.route('/chat', methods=['GET'])
+def chat_page():
     return render_template('chat.html')
 
 @app.route('/api', methods=['GET'])
