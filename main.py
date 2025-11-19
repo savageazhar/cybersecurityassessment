@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, Response, stream_with_context, render
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from flask_wtf.csrf import CSRFProtect, validate_csrf
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
 from openai import OpenAI
 import json
@@ -69,20 +69,13 @@ def about():
     return render_template('about.html')
 
 @app.route('/login', methods=['GET', 'POST'])
-@csrf.exempt
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
     
     if request.method == 'POST':
-        if not request.is_json:
-            try:
-                validate_csrf(request.form.get('csrf_token'))
-            except Exception as e:
-                flash('CSRF validation failed. Please try again.', 'error')
-                return redirect(url_for('login'))
-        
         data = request.get_json() if request.is_json else request.form
+        app.logger.info(f"Login attempt - Email/Phone: {data.get('email_or_phone')}")
         email_or_phone = data.get('email_or_phone', '').strip()
         password = data.get('password', '')
         
@@ -116,20 +109,13 @@ def login():
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
-@csrf.exempt
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
     
     if request.method == 'POST':
-        if not request.is_json:
-            try:
-                validate_csrf(request.form.get('csrf_token'))
-            except Exception as e:
-                flash('CSRF validation failed. Please try again.', 'error')
-                return redirect(url_for('signup'))
-        
         data = request.get_json() if request.is_json else request.form
+        app.logger.info(f"Signup attempt - Email: {data.get('email')}, Name: {data.get('name')}")
         name = data.get('name', '').strip()
         email = data.get('email', '').strip()
         phone = data.get('phone', '').strip()
@@ -137,6 +123,7 @@ def signup():
         confirm_password = data.get('confirm_password', '')
         
         if not all([name, email, phone, password]):
+            app.logger.warning(f"Signup validation failed: missing fields")
             if request.is_json:
                 return jsonify({"error": "All fields are required"}), 400
             flash('All fields are required', 'error')
@@ -173,11 +160,10 @@ def signup():
             db.session.add(user)
             db.session.commit()
             
-            print(f"DEBUG: User created successfully with ID: {user.id}")
-            print(f"DEBUG: User details - Name: {user.name}, Email: {user.email}")
+            app.logger.info(f"✅ User created successfully - ID: {user.id}, Email: {user.email}")
             
             login_user(user, remember=True)
-            print(f"DEBUG: User logged in, is_authenticated: {current_user.is_authenticated}")
+            app.logger.info(f"✅ User logged in - Authenticated: {current_user.is_authenticated}")
             
             if request.is_json:
                 return jsonify({
@@ -192,7 +178,7 @@ def signup():
             return redirect(url_for('chat_page'))
         except Exception as e:
             db.session.rollback()
-            print(f"DEBUG: Error during signup - {str(e)}")
+            app.logger.error(f"❌ Signup error: {str(e)}")
             import traceback
             traceback.print_exc()
             if request.is_json:
