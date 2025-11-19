@@ -77,6 +77,7 @@ def about():
     return render_template('about.html')
 
 @app.route('/login', methods=['GET', 'POST'])
+@csrf.exempt
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
@@ -117,6 +118,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
+@csrf.exempt
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
