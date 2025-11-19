@@ -17,6 +17,10 @@ AVAILABLE_MODELS = [
     "gpt-4.1",
     "gpt-4.1-mini",
     "gpt-4.1-nano",
+    "gpt-5",
+    "gpt-5.1",
+    "gpt-5-mini",
+    "gpt-5-nano",
     "gpt-3.5-turbo"
 ]
 
@@ -29,11 +33,20 @@ def api_info():
     return jsonify({
         "name": "OpenAI Chat API",
         "version": "1.0.0",
-        "description": "REST API for OpenAI GPT models",
+        "description": "REST API for OpenAI GPT models with multiple models, streaming, and token tracking",
+        "features": [
+            "Multiple OpenAI GPT models (GPT-4o, GPT-4.1, GPT-5, and more)",
+            "Regular chat completions with conversation history",
+            "Streaming responses for real-time output",
+            "Token usage tracking",
+            "CORS enabled for cross-origin requests"
+        ],
         "endpoints": {
+            "GET /": "Web chat interface",
+            "GET /api": "API documentation",
             "GET /health": "Check API health status",
             "GET /models": "List available models",
-            "POST /chat": "Create chat completion",
+            "POST /chat": "Create chat completion with token usage",
             "POST /chat/stream": "Create streaming chat completion"
         },
         "documentation": "See README.md for usage examples"

@@ -7,8 +7,11 @@ This is a complete chat application with both a web interface and REST API that 
 The application features:
 - **Web Chat Interface**: Modern, responsive chat UI with real-time streaming responses
 - **REST API**: Programmatic access for integration with other applications
-- **Multi-Model Support**: Choose from 7 different OpenAI models
+- **Multi-Model Support**: Choose from 10 different OpenAI models (GPT-4o, GPT-4.1, GPT-5 series)
 - **Streaming Responses**: See AI responses appear in real-time as they're generated
+- **Token Usage Tracking**: Monitor prompt and completion tokens for cost tracking
+- **Conversation History**: Maintain context across multiple messages
+- **CORS Enabled**: Ready for cross-origin requests from web applications
 
 ## User Preferences
 
@@ -36,8 +39,12 @@ Preferred communication style: Simple, everyday language.
 - **Rationale**: Uses direct OpenAI API access with user's own API key for secure, production-ready deployment
 
 ### Model Support
-- **Available Models**: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-3.5-turbo
-- **Default Model**: gpt-4o-mini
+- **Available Models**: 10 models including GPT-4o, GPT-4.1, GPT-5, and GPT-5.1 series
+  - GPT-4o series: gpt-4o, gpt-4o-mini
+  - GPT-4.1 series: gpt-4.1, gpt-4.1-mini, gpt-4.1-nano
+  - GPT-5 series: gpt-5, gpt-5.1, gpt-5-mini, gpt-5-nano
+  - Classic: gpt-3.5-turbo
+- **Default Model**: gpt-4o-mini (fast and affordable)
 - **Design Pattern**: Hardcoded model list with validation
 - **Rationale**: Provides controlled access to specific OpenAI models via direct API integration
 - **Model Selection**: Only includes models verified to exist in OpenAI API as of November 2025
