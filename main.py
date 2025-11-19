@@ -12,17 +12,13 @@ client = OpenAI(
 )
 
 AVAILABLE_MODELS = [
-    "gpt-5",
-    "gpt-5-mini",
-    "gpt-5-nano",
-    "gpt-4.1",
-    "gpt-4.1-mini",
-    "gpt-4.1-nano",
     "gpt-4o",
     "gpt-4o-mini",
-    "o4-mini",
-    "o3",
-    "o3-mini"
+    "gpt-4-turbo",
+    "gpt-4",
+    "gpt-3.5-turbo",
+    "o1-preview",
+    "o1-mini"
 ]
 
 @app.route('/', methods=['GET'])
@@ -52,7 +48,7 @@ def health():
 def get_models():
     return jsonify({
         "models": AVAILABLE_MODELS,
-        "default": "gpt-4o"
+        "default": "gpt-4o-mini"
     }), 200
 
 @app.route('/chat', methods=['POST'])
@@ -66,7 +62,7 @@ def chat():
             }), 400
         
         message = data['message']
-        model = data.get('model', 'gpt-4o')
+        model = data.get('model', 'gpt-4o-mini')
         messages = data.get('messages', [])
         
         if model not in AVAILABLE_MODELS:
@@ -127,7 +123,7 @@ def chat_stream():
             }), 400
         
         message = data['message']
-        model = data.get('model', 'gpt-4o')
+        model = data.get('model', 'gpt-4o-mini')
         messages = data.get('messages', [])
         
         if model not in AVAILABLE_MODELS:

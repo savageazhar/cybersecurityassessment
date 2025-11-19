@@ -61,8 +61,8 @@ Returns all available GPT models.
 **Response:**
 ```json
 {
-  "models": ["gpt-5", "gpt-5-mini", "gpt-4.1", "gpt-4o", ...],
-  "default": "gpt-4o"
+  "models": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo", "o1-preview", "o1-mini"],
+  "default": "gpt-4o-mini"
 }
 ```
 
@@ -84,7 +84,7 @@ Send a message and get a response from the AI.
 
 **Parameters:**
 - `message` (required): The user's message
-- `model` (optional): Model to use (default: "gpt-4o")
+- `model` (optional): Model to use (default: "gpt-4o-mini")
 - `messages` (optional): Conversation history array
 
 **Response:**
@@ -165,10 +165,13 @@ curl -X POST http://your-repl-url/chat/stream \
 
 ## Available Models
 
-- `gpt-5`, `gpt-5-mini`, `gpt-5-nano`
-- `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`
-- `gpt-4o`, `gpt-4o-mini`
-- `o4-mini`, `o3`, `o3-mini`
+- `gpt-4o` - Most capable GPT-4 model, great for complex tasks
+- `gpt-4o-mini` - Fast and affordable, recommended for most uses (default)
+- `gpt-4-turbo` - High-performance GPT-4 variant
+- `gpt-4` - Standard GPT-4 model
+- `gpt-3.5-turbo` - Fast and cost-effective
+- `o1-preview` - Advanced reasoning model for complex problems
+- `o1-mini` - Faster reasoning model
 
 ## Error Handling
 
