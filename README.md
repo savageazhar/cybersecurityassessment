@@ -12,6 +12,29 @@ A REST API that provides access to OpenAI GPT models through Replit AI Integrati
 
 ## API Endpoints
 
+### API Information
+```bash
+GET /
+```
+
+Returns API information and available endpoints.
+
+**Response:**
+```json
+{
+  "name": "OpenAI Chat API",
+  "version": "1.0.0",
+  "description": "REST API for OpenAI GPT models via Replit AI Integrations",
+  "endpoints": {
+    "GET /health": "Check API health status",
+    "GET /models": "List available models",
+    "POST /chat": "Create chat completion",
+    "POST /chat/stream": "Create streaming chat completion"
+  },
+  "documentation": "See README.md for usage examples"
+}
+```
+
 ### Health Check
 ```bash
 GET /health

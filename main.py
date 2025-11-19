@@ -26,6 +26,21 @@ AVAILABLE_MODELS = [
     "o3-mini"
 ]
 
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({
+        "name": "OpenAI Chat API",
+        "version": "1.0.0",
+        "description": "REST API for OpenAI GPT models via Replit AI Integrations",
+        "endpoints": {
+            "GET /health": "Check API health status",
+            "GET /models": "List available models",
+            "POST /chat": "Create chat completion",
+            "POST /chat/stream": "Create streaming chat completion"
+        },
+        "documentation": "See README.md for usage examples"
+    }), 200
+
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({
