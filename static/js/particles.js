@@ -4,8 +4,8 @@ class ParticleSystem {
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        this.symbols = ['$', '€', '¥', '£', '+', '-', '%', '='];
-        this.tradingSymbols = ['BTCUSD', 'EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD', 'SPX', 'NASDAQ'];
+        this.symbols = ['+', '-', '*', '/', '<', '>', '=', '∞'];
+        this.tradingSymbols = ['AI', 'GPT', 'ML', 'CODE', 'DATA', 'TECH', 'API'];
         
         this.init();
         this.animate();

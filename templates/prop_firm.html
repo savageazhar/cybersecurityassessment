@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Time Limit Prop Firm — Conquer the Market</title>
+    <title>AI Chat - Intelligent Conversations Powered by OpenAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/prop_firm.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,16 +13,15 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <span class="logo-text">PROP<span class="glow">FIRM</span></span>
+                <span class="logo-text">AI<span class="glow">CHAT</span></span>
             </div>
             
             <div class="nav-menu" id="navMenu">
                 <a href="#home" class="nav-link">Home</a>
-                <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="#programs" class="nav-link">Programs</a>
-                <a href="#support" class="nav-link">Support</a>
-                <a href="#careers" class="nav-link">Careers</a>
-                <a href="#partner" class="nav-link">Become a Partner</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#models" class="nav-link">Models</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="/about" class="nav-link">Contact</a>
             </div>
 
             <div class="nav-actions">
@@ -41,14 +40,13 @@
                 </div>
                 
                 {% if current_user.is_authenticated %}
-                    <a href="/chat" class="btn-nav">Dashboard</a>
+                    <a href="/chat" class="btn-nav">Go to Chat</a>
                     <a href="/logout" class="btn-nav btn-secondary">Logout</a>
                 {% else %}
                     <a href="/login" class="btn-nav">Login / Register</a>
                 {% endif %}
                 
-                <a href="#challenge" class="btn-primary">Start a Challenge</a>
-                <a href="#trial" class="btn-trial">Free Trial</a>
+                <a href="/chat" class="btn-primary">Start Chatting</a>
             </div>
 
             <button class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -61,30 +59,30 @@
 
     <section class="hero" id="home">
         <div class="hero-background">
-            <div class="floating-element" data-speed="2">$</div>
-            <div class="floating-element" data-speed="1.5">€</div>
-            <div class="floating-element" data-speed="3">¥</div>
-            <div class="floating-element" data-speed="2.5">£</div>
-            <div class="floating-element number" data-speed="1.8">+125%</div>
-            <div class="floating-element number" data-speed="2.2">$10K</div>
+            <div class="floating-element" data-speed="2">AI</div>
+            <div class="floating-element" data-speed="1.5">GPT</div>
+            <div class="floating-element" data-speed="3">{ }</div>
+            <div class="floating-element" data-speed="2.5">&lt;/&gt;</div>
+            <div class="floating-element number" data-speed="1.8">4.0</div>
+            <div class="floating-element number" data-speed="2.2">∞</div>
         </div>
 
         <div class="hero-content">
             <h1 class="hero-title">
-                <span class="title-line">No Time Limit Prop Firm</span>
-                <span class="title-line glow-text">Conquer the Market</span>
+                <span class="title-line">Intelligent AI Assistant</span>
+                <span class="title-line glow-text">Powered by OpenAI</span>
             </h1>
             
-            <p class="hero-subtitle">Our Capital, Your Success</p>
+            <p class="hero-subtitle">Experience the future of conversation with advanced AI technology</p>
 
             <div class="hero-cta">
-                <a href="#challenge" class="btn-hero btn-primary">
-                    <span>Start a Challenge</span>
-                    <i class="fas fa-rocket"></i>
+                <a href="/chat" class="btn-hero btn-primary">
+                    <span>Start Chatting Now</span>
+                    <i class="fas fa-comments"></i>
                 </a>
-                <a href="#trial" class="btn-hero btn-secondary">
-                    <span>Free Trial</span>
-                    <i class="fas fa-gift"></i>
+                <a href="/signup" class="btn-hero btn-secondary">
+                    <span>Create Account</span>
+                    <i class="fas fa-user-plus"></i>
                 </a>
             </div>
 
@@ -102,97 +100,97 @@
         </div>
     </section>
 
-    <section class="how-it-works" id="how-it-works">
+    <section class="how-it-works" id="features">
         <div class="container">
-            <h2 class="section-title">How It <span class="glow-text">Works</span></h2>
-            <p class="section-subtitle">Your journey to professional trading in 3 simple steps</p>
+            <h2 class="section-title">Key <span class="glow-text">Features</span></h2>
+            <p class="section-subtitle">Everything you need for powerful AI conversations</p>
 
             <div class="steps-grid">
                 <div class="step-card glass-card">
                     <div class="step-number">01</div>
                     <div class="step-icon">
-                        <i class="fas fa-clipboard-check"></i>
+                        <i class="fas fa-bolt"></i>
                     </div>
-                    <h3>Choose Your Challenge</h3>
-                    <p>Select from our range of funding programs tailored to your trading style and experience level.</p>
+                    <h3>Real-Time Streaming</h3>
+                    <p>Experience lightning-fast responses as the AI generates text in real-time, word by word.</p>
                 </div>
 
                 <div class="step-card glass-card">
                     <div class="step-number">02</div>
                     <div class="step-icon">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-brain"></i>
                     </div>
-                    <h3>Pass the Evaluation</h3>
-                    <p>Trade with no time limits. Demonstrate your skills and risk management at your own pace.</p>
+                    <h3>Multiple AI Models</h3>
+                    <p>Choose from 6 advanced GPT models including GPT-4o, GPT-4.1 series, and GPT-3.5 Turbo.</p>
                 </div>
 
                 <div class="step-card glass-card">
                     <div class="step-number">03</div>
                     <div class="step-icon">
-                        <i class="fas fa-trophy"></i>
+                        <i class="fas fa-history"></i>
                     </div>
-                    <h3>Get Funded</h3>
-                    <p>Receive up to $200K in trading capital and keep up to 90% of your profits.</p>
+                    <h3>Conversation History</h3>
+                    <p>Your conversations are saved and maintained across sessions for seamless continuity.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="programs" id="programs">
+    <section class="programs" id="models">
         <div class="container">
-            <h2 class="section-title">Our <span class="glow-text">Programs</span></h2>
-            <p class="section-subtitle">Choose the perfect challenge for your trading journey</p>
+            <h2 class="section-title">Available AI <span class="glow-text">Models</span></h2>
+            <p class="section-subtitle">Choose the perfect model for your needs</p>
 
             <div class="programs-grid">
                 <div class="program-card glass-card">
-                    <div class="program-badge">Popular</div>
-                    <h3>Starter</h3>
+                    <div class="program-badge">Fast</div>
+                    <h3>GPT-4o Mini</h3>
                     <div class="program-price">
-                        <span class="price">$99</span>
-                        <span class="duration">one-time</span>
+                        <span class="price">Default</span>
+                        <span class="duration">model</span>
                     </div>
                     <ul class="program-features">
-                        <li><i class="fas fa-check"></i> $10,000 Account</li>
-                        <li><i class="fas fa-check"></i> No Time Limit</li>
-                        <li><i class="fas fa-check"></i> 80% Profit Split</li>
-                        <li><i class="fas fa-check"></i> 1:30 Leverage</li>
-                        <li><i class="fas fa-check"></i> Free Retry</li>
+                        <li><i class="fas fa-check"></i> Lightning Fast</li>
+                        <li><i class="fas fa-check"></i> Cost Effective</li>
+                        <li><i class="fas fa-check"></i> Great for Quick Tasks</li>
+                        <li><i class="fas fa-check"></i> Real-Time Responses</li>
+                        <li><i class="fas fa-check"></i> Best for Daily Use</li>
                     </ul>
-                    <button class="btn-program">Get Started</button>
+                    <button class="btn-program">Use This Model</button>
                 </div>
 
                 <div class="program-card glass-card featured">
-                    <div class="program-badge glow">Best Value</div>
-                    <h3>Professional</h3>
+                    <div class="program-badge glow">Recommended</div>
+                    <h3>GPT-4o</h3>
                     <div class="program-price">
-                        <span class="price">$299</span>
-                        <span class="duration">one-time</span>
+                        <span class="price">Advanced</span>
+                        <span class="duration">model</span>
                     </div>
                     <ul class="program-features">
-                        <li><i class="fas fa-check"></i> $50,000 Account</li>
-                        <li><i class="fas fa-check"></i> No Time Limit</li>
-                        <li><i class="fas fa-check"></i> 85% Profit Split</li>
-                        <li><i class="fas fa-check"></i> 1:50 Leverage</li>
-                        <li><i class="fas fa-check"></i> 2 Free Retries</li>
+                        <li><i class="fas fa-check"></i> Most Capable</li>
+                        <li><i class="fas fa-check"></i> Superior Reasoning</li>
+                        <li><i class="fas fa-check"></i> Complex Tasks</li>
+                        <li><i class="fas fa-check"></i> Better Context</li>
+                        <li><i class="fas fa-check"></i> Creative Writing</li>
                     </ul>
-                    <button class="btn-program">Get Started</button>
+                    <button class="btn-program">Use This Model</button>
                 </div>
 
                 <div class="program-card glass-card">
-                    <div class="program-badge">Elite</div>
-                    <h3>Expert</h3>
+                    <div class="program-badge">Latest</div>
+                    <h3>GPT-4.1</h3>
                     <div class="program-price">
-                        <span class="price">$599</span>
-                        <span class="duration">one-time</span>
+                        <span class="price">Cutting Edge</span>
+                        <span class="duration">model</span>
                     </div>
                     <ul class="program-features">
-                        <li><i class="fas fa-check"></i> $200,000 Account</li>
-                        <li><i class="fas fa-check"></i> No Time Limit</li>
-                        <li><i class="fas fa-check"></i> 90% Profit Split</li>
-                        <li><i class="fas fa-check"></i> 1:100 Leverage</li>
-                        <li><i class="fas fa-check"></i> Unlimited Retries</li>
+                        <li><i class="fas fa-check"></i> Latest Technology</li>
+                        <li><i class="fas fa-check"></i> Enhanced Accuracy</li>
+                        <li><i class="fas fa-check"></i> Improved Logic</li>
+                        <li><i class="fas fa-check"></i> Multi-Task</li>
+                        <li><i class="fas fa-check"></i> Future-Ready</li>
                     </ul>
-                    <button class="btn-program">Get Started</button>
+                    <button class="btn-program">Use This Model</button>
                 </div>
             </div>
         </div>
@@ -202,86 +200,52 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number" data-target="15000">0</div>
-                    <div class="stat-label">Active Traders</div>
+                    <div class="stat-number" data-target="6">0</div>
+                    <div class="stat-label">AI Models Available</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">$<span data-target="50">0</span>M+</div>
-                    <div class="stat-label">Paid in Profits</div>
+                    <div class="stat-number" data-target="99">0</div>
+                    <div class="stat-label">% Uptime</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" data-target="98">0</div>
-                    <div class="stat-label">% Success Rate</div>
+                    <div class="stat-number" data-target="100">0</div>
+                    <div class="stat-label">% Secure</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" data-target="24">0</div>
-                    <div class="stat-label">Hour Support</div>
+                    <div class="stat-label">Hour Access</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="support" id="support">
+    <section class="support" id="about">
         <div class="container">
             <div class="support-content">
                 <div class="support-text">
-                    <h2>24/7 <span class="glow-text">Support</span></h2>
-                    <p>Our dedicated team is here to help you succeed. Get instant answers to your questions and personalized guidance throughout your trading journey.</p>
+                    <h2>About <span class="glow-text">AI Chat</span></h2>
+                    <p>Our platform provides seamless access to OpenAI's powerful language models. Experience intelligent conversations, get help with tasks, and unlock the potential of artificial intelligence.</p>
                     <div class="support-features">
                         <div class="feature-item">
-                            <i class="fas fa-headset"></i>
-                            <span>Live Chat Support</span>
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Secure & Private</span>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-book-open"></i>
-                            <span>Trading Resources</span>
+                            <i class="fas fa-rocket"></i>
+                            <span>Fast Performance</span>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-users"></i>
-                            <span>Community Access</span>
+                            <i class="fas fa-star"></i>
+                            <span>Best-in-Class AI</span>
                         </div>
                     </div>
-                    <button class="btn-primary">Contact Support</button>
+                    <a href="/chat" class="btn-primary">Try It Now</a>
                 </div>
                 <div class="support-image glass-card">
                     <div class="chart-placeholder">
-                        <i class="fas fa-chart-area"></i>
+                        <i class="fas fa-robot"></i>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="careers" id="careers">
-        <div class="container">
-            <div class="careers-content glass-card">
-                <h2>Join Our <span class="glow-text">Team</span></h2>
-                <p>We're always looking for talented individuals to join our growing team. Explore exciting career opportunities in trading, technology, and support.</p>
-                <button class="btn-primary">View Open Positions</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="partner" id="partner">
-        <div class="container">
-            <div class="partner-content">
-                <h2>Become a <span class="glow-text">Partner</span></h2>
-                <p>Join our affiliate program and earn generous commissions by referring traders to our platform. Get access to exclusive marketing materials and dedicated support.</p>
-                <div class="partner-benefits">
-                    <div class="benefit-item">
-                        <i class="fas fa-percentage"></i>
-                        <span>Up to 20% Commission</span>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-infinity"></i>
-                        <span>Lifetime Earnings</span>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-rocket"></i>
-                        <span>Marketing Support</span>
-                    </div>
-                </div>
-                <button class="btn-primary">Apply Now</button>
             </div>
         </div>
     </section>
@@ -290,53 +254,48 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>PROP<span class="glow">FIRM</span></h3>
-                    <p>Empowering traders worldwide with our capital and support.</p>
+                    <h3>AI<span class="glow">CHAT</span></h3>
+                    <p>Experience intelligent conversations powered by advanced AI technology.</p>
                     <div class="social-icons">
                         <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
 
                 <div class="footer-section">
-                    <h4>Company</h4>
-                    <a href="#about">About Us</a>
-                    <a href="#how-it-works">How It Works</a>
-                    <a href="#careers">Careers</a>
-                    <a href="#partner">Partners</a>
+                    <h4>Platform</h4>
+                    <a href="#features">Features</a>
+                    <a href="#models">AI Models</a>
+                    <a href="#about">About</a>
+                    <a href="/chat">Chat</a>
                 </div>
 
                 <div class="footer-section">
                     <h4>Resources</h4>
-                    <a href="#programs">Programs</a>
-                    <a href="#support">Support Center</a>
+                    <a href="#about">Documentation</a>
+                    <a href="/about">Support</a>
                     <a href="#faq">FAQ</a>
-                    <a href="#blog">Blog</a>
+                    <a href="#api">API Access</a>
                 </div>
 
                 <div class="footer-section">
                     <h4>Legal</h4>
                     <a href="#terms">Terms of Service</a>
                     <a href="#privacy">Privacy Policy</a>
-                    <a href="#disclaimer">Risk Disclaimer</a>
                 </div>
 
                 <div class="footer-section">
-                    <h4>Newsletter</h4>
-                    <p>Stay updated with our latest news</p>
-                    <div class="newsletter-form">
-                        <input type="email" placeholder="Your email">
-                        <button><i class="fas fa-paper-plane"></i></button>
-                    </div>
+                    <h4>Contact</h4>
+                    <p>Phone: +91 83406 00849</p>
+                    <p>Email: mdazruddin.dilansari@gmail.com</p>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2025 PropFirm. All rights reserved.</p>
-                <p>Risk Warning: Trading involves substantial risk of loss.</p>
+                <p>&copy; 2025 AI Chat. All rights reserved.</p>
+                <p>Powered by OpenAI technology</p>
             </div>
         </div>
     </footer>
