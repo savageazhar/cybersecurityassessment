@@ -5,7 +5,7 @@ class ParticleSystem {
         this.particles = [];
         this.numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         this.symbols = ['+', '-', '*', '/', '<', '>', '=', '∞'];
-        this.tradingSymbols = ['AI', 'GPT', 'ML', 'CODE', 'DATA', 'TECH', 'API'];
+        this.techSymbols = ['AI', 'GPT', 'ML', 'CODE', 'DATA', 'TECH', 'API'];
         
         this.init();
         this.animate();
@@ -34,7 +34,7 @@ class ParticleSystem {
         } else if (type === 'symbol') {
             content = this.symbols[Math.floor(Math.random() * this.symbols.length)];
         } else if (type === 'trading') {
-            content = this.tradingSymbols[Math.floor(Math.random() * this.tradingSymbols.length)];
+            content = this.techSymbols[Math.floor(Math.random() * this.techSymbols.length)];
         }
         
         return {
