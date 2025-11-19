@@ -36,10 +36,11 @@ Preferred communication style: Simple, everyday language.
 - **Rationale**: Uses direct OpenAI API access with user's own API key for secure, production-ready deployment
 
 ### Model Support
-- **Available Models**: gpt-4o, gpt-4o-mini, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-preview, o1-mini
+- **Available Models**: gpt-4o, gpt-4o-mini, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-3.5-turbo
 - **Default Model**: gpt-4o-mini
 - **Design Pattern**: Hardcoded model list with validation
 - **Rationale**: Provides controlled access to specific OpenAI models via direct API integration
+- **Model Selection**: Only includes models verified to exist in OpenAI API as of November 2025
 
 ### Frontend Architecture
 - **Technology**: HTML5, CSS3, Vanilla JavaScript
