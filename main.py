@@ -45,6 +45,11 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
+    def __init__(self, name, email, phone):
+        self.name = name
+        self.email = email
+        self.phone = phone
+    
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
     
@@ -168,7 +173,11 @@ def signup():
             db.session.add(user)
             db.session.commit()
             
-            login_user(user)
+            print(f"DEBUG: User created successfully with ID: {user.id}")
+            print(f"DEBUG: User details - Name: {user.name}, Email: {user.email}")
+            
+            login_user(user, remember=True)
+            print(f"DEBUG: User logged in, is_authenticated: {current_user.is_authenticated}")
             
             if request.is_json:
                 return jsonify({
@@ -179,13 +188,16 @@ def signup():
                         "email": user.email
                     }
                 }), 201
-            flash('Account created successfully!', 'success')
+            flash('Account created successfully! Welcome to AI Chat!', 'success')
             return redirect(url_for('chat_page'))
         except Exception as e:
             db.session.rollback()
+            print(f"DEBUG: Error during signup - {str(e)}")
+            import traceback
+            traceback.print_exc()
             if request.is_json:
                 return jsonify({"error": str(e)}), 500
-            flash('An error occurred. Please try again.', 'error')
+            flash(f'An error occurred: {str(e)}', 'error')
             return redirect(url_for('signup'))
     
     return render_template('signup.html')
