@@ -57,7 +57,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('prop_firm.html')
 
 @app.route('/about')
 def about():
