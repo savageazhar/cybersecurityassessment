@@ -8,8 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 client = OpenAI(
-    api_key=os.environ.get("AI_INTEGRATIONS_OPENAI_API_KEY"),
-    base_url=os.environ.get("AI_INTEGRATIONS_OPENAI_BASE_URL")
+    api_key=os.environ.get("OPENAI_API_KEY_CYB_SEC")
 )
 
 AVAILABLE_MODELS = [
@@ -31,7 +30,7 @@ def index():
     return jsonify({
         "name": "OpenAI Chat API",
         "version": "1.0.0",
-        "description": "REST API for OpenAI GPT models via Replit AI Integrations",
+        "description": "REST API for OpenAI GPT models",
         "endpoints": {
             "GET /health": "Check API health status",
             "GET /models": "List available models",
@@ -46,7 +45,7 @@ def health():
     return jsonify({
         "status": "healthy",
         "service": "OpenAI Chat API",
-        "integration": "Replit AI Integrations"
+        "provider": "OpenAI"
     }), 200
 
 @app.route('/models', methods=['GET'])

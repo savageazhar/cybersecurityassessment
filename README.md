@@ -1,6 +1,6 @@
 # OpenAI Chat API
 
-A REST API that provides access to OpenAI GPT models through Replit AI Integrations. No API key required - usage is billed to your Replit credits.
+A REST API that provides access to OpenAI GPT models using your own OpenAI API key.
 
 ## Features
 
@@ -24,7 +24,7 @@ Returns API information and available endpoints.
 {
   "name": "OpenAI Chat API",
   "version": "1.0.0",
-  "description": "REST API for OpenAI GPT models via Replit AI Integrations",
+  "description": "REST API for OpenAI GPT models",
   "endpoints": {
     "GET /health": "Check API health status",
     "GET /models": "List available models",
@@ -47,7 +47,7 @@ Returns the API status.
 {
   "status": "healthy",
   "service": "OpenAI Chat API",
-  "integration": "Replit AI Integrations"
+  "provider": "OpenAI"
 }
 ```
 
@@ -191,9 +191,12 @@ The API runs on port 5000:
 python main.py
 ```
 
+## Configuration
+
+The API requires the `OPENAI_API_KEY_CYB_SEC` environment variable to be set with your OpenAI API key.
+
 ## Notes
 
-- This API uses Replit AI Integrations
-- No personal API key required
-- Usage is billed to your Replit credits
+- Uses your own OpenAI API key for secure access
 - CORS is enabled for all origins
+- Production-ready with Gunicorn WSGI server

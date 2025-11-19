@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a REST API service that provides a proxy interface to OpenAI GPT models through Replit AI Integrations. The service eliminates the need for users to manage their own OpenAI API keys by leveraging Replit's AI integration infrastructure, where usage is billed directly to Replit credits.
+This is a REST API service that provides a secure interface to OpenAI GPT models using the user's own OpenAI API key stored in environment variables.
 
 The API exposes endpoints for health checking, listing available models, and creating chat completions with support for both standard and streaming responses.
 
@@ -28,9 +28,8 @@ Preferred communication style: Simple, everyday language.
 ### API Client Architecture
 - **Client Library**: OpenAI Python SDK
 - **Configuration Method**: Environment variable-based configuration
-  - API key injected via `AI_INTEGRATIONS_OPENAI_API_KEY`
-  - Custom base URL via `AI_INTEGRATIONS_OPENAI_BASE_URL`
-- **Rationale**: Uses Replit's AI integration proxy instead of direct OpenAI API access, enabling billing through Replit credits rather than requiring user API keys
+  - API key injected via `OPENAI_API_KEY_CYB_SEC`
+- **Rationale**: Uses direct OpenAI API access with user's own API key for secure, production-ready deployment
 
 ### Model Support
 - **Available Models**: Multiple GPT variants including GPT-5, GPT-4.1, GPT-4o series, and o-series models
@@ -69,10 +68,10 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 
 ### Third-Party Services
-- **OpenAI API** (via Replit AI Integrations proxy)
+- **OpenAI API** (Direct access)
   - Purpose: Access to GPT language models
-  - Authentication: Managed through Replit environment variables
-  - Billing: Charged to Replit credits instead of direct OpenAI billing
+  - Authentication: User's own OpenAI API key via environment variables
+  - Billing: Charged directly to user's OpenAI account
 
 ### Python Packages
 - **Flask**: Web framework for API server
@@ -81,10 +80,11 @@ Preferred communication style: Simple, everyday language.
 
 ### Environment Configuration
 - **Required Environment Variables**:
-  - `AI_INTEGRATIONS_OPENAI_API_KEY`: Authentication token for Replit AI integration
-  - `AI_INTEGRATIONS_OPENAI_BASE_URL`: Custom endpoint URL for Replit's OpenAI proxy
+  - `OPENAI_API_KEY_CYB_SEC`: User's OpenAI API key for authentication
 
 ### Infrastructure
 - **Hosting Platform**: Replit
-- **Runtime**: Python (version not specified in repository)
-- **Integration Layer**: Replit AI Integrations service acts as intermediary between application and OpenAI
+- **Runtime**: Python 3.11
+- **Web Server**: Gunicorn (production WSGI server)
+- **Workers**: 2 workers with 120-second timeout
+- **API Access**: Direct connection to OpenAI API
