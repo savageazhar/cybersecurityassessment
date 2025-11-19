@@ -1,15 +1,15 @@
-# PropFirm - Funded Trading Platform
+# AI Chat - Intelligent Conversation Platform
 
 ## Overview
 
-A modern prop trading firm platform with user authentication, AI-powered chat capabilities, and a futuristic design. The platform allows traders to access funded accounts and AI assistance for trading decisions.
+A modern AI chat application with user authentication, OpenAI GPT integration, and a stunning futuristic design. The platform provides seamless access to multiple AI models for intelligent conversations and assistance.
 
 The application features:
-- **Landing Page**: Modern prop-firm website with dark theme, neon green accents, and animated particles
+- **Landing Page**: Modern AI-focused website with dark theme, neon green accents, and animated tech particles
 - **User Authentication**: Secure signup/login system with PostgreSQL database storage
-- **AI Chat Interface**: OpenAI GPT integration for trading assistance (protected by authentication)
-- **REST API**: Programmatic access for integration with trading platforms
-- **Multi-Model Support**: Choose from 6 different OpenAI models (GPT-4o, GPT-4.1 series)
+- **AI Chat Interface**: OpenAI GPT integration for intelligent assistance (protected by authentication)
+- **REST API**: Programmatic access for chat completions and streaming
+- **Multi-Model Support**: Choose from 6 different OpenAI models (GPT-4o, GPT-4.1 series, GPT-3.5)
 - **Streaming Responses**: Real-time AI responses with word-by-word display
 - **Token Usage Tracking**: Monitor API usage and costs
 - **CORS Enabled**: Ready for cross-origin requests from web applications
@@ -37,11 +37,11 @@ Preferred communication style: Simple, everyday language.
   - OpenAI SDK integration
 
 ### Frontend Architecture
-- **Design Theme**: Dark futuristic prop-firm style
+- **Design Theme**: Dark futuristic AI-focused style
   - Dark background (#0a0e1a)
   - Neon green accents (#00ff88)
   - Glassmorphism effects with backdrop blur
-  - Animated particle backgrounds
+  - Animated particle backgrounds with tech symbols
   - GSAP-powered scroll animations
 - **Technology Stack**:
   - HTML5, CSS3, Vanilla JavaScript
@@ -54,37 +54,37 @@ Preferred communication style: Simple, everyday language.
 
 #### Public Pages
 1. **Homepage** (`GET /`)
-   - Modern landing page (prop_firm.html)
-   - Hero section: "No Time Limit Prop Firm — Conquer the Market"
+   - Modern AI Chat landing page (prop_firm.html)
+   - Hero section: "Intelligent AI Assistant — Powered by OpenAI"
    - Transparent navbar with glass effect
-   - Navigation: Home, How It Works, Programs, Support, Careers, Become a Partner
-   - Features: Start Challenge, Free Trial, Language Selector, Login/Register buttons
-   - Sections: How It Works, Programs, Stats, Support, Careers, Partner
-   - Animated particle background with trading symbols
+   - Navigation: Home, Features, Models, About, Contact
+   - Actions: Language Selector, Login/Register, Start Chatting buttons
+   - Sections: Features (streaming, models, history), AI Models (GPT-4o, GPT-4.1, GPT-4o Mini), Stats, About
+   - Animated particle background with tech symbols (AI, GPT, ML, CODE, API, TECH, DATA, { }, </>, ∞)
    - Cookie consent banner
    - Social media icons (fixed bottom-left)
    - Play button for intro video
    - Scroll-to-explore indicator
 
 2. **Login Page** (`GET/POST /login`)
-   - Prop-firm themed login interface
+   - AI Chat themed login interface
    - Email/phone and password authentication
    - CSRF-protected form submissions
-   - Animated trading elements background
-   - Split layout with features showcase
+   - Animated tech elements background (AI, GPT-4, ∞)
+   - Split layout with AI features showcase
    - Link to signup page
 
 3. **Signup Page** (`GET/POST /signup`)
-   - Prop-firm themed registration interface
+   - AI Chat themed registration interface
    - Fields: name, email, phone, password
    - CSRF-protected form submissions
-   - Benefits showcase section
-   - Animated background
+   - Benefits showcase section (free access, multiple models, conversation history, streaming)
+   - Animated tech background (GPT, AI, 4.0)
    - Link to login page
 
 4. **About Page** (`GET /about`)
    - Company/platform information
-   - Prop-firm theme
+   - AI Chat theme
 
 #### Protected Pages (Require Login)
 5. **Chat Interface** (`GET /chat`)
@@ -197,8 +197,8 @@ Preferred communication style: Simple, everyday language.
   - Pulse animations
   - Smooth transitions
 - **Particle System**:
-  - Trading symbols (BTCUSD, EURUSD, etc.)
-  - Currency symbols ($, €, ¥, £)
+  - Tech symbols (AI, GPT, ML, CODE, DATA, TECH, API)
+  - Programming symbols ({ }, </>, +, -, *, /, <, >, =, ∞)
   - Numbers and mathematical elements
   - Dynamic connections between particles
 
@@ -279,13 +279,13 @@ Preferred communication style: Simple, everyday language.
 - `SECRET_KEY`: Flask session secret (auto-generated in dev)
 
 ### Recent Updates (November 2025)
-- Complete redesign from simple chat app to prop-firm platform
-- Implemented user authentication with PostgreSQL
-- Created futuristic landing page with animations
-- Added glassmorphism design system
-- Integrated particle animation system
-- Built responsive login/signup pages
-- Added CSRF protection for forms
-- Integrated GSAP animations
-- Created cookie consent system
-- Added social media integration UI
+- Transformed website from prop-trading to AI chat focus
+- Removed all crypto/trading/challenge references
+- Updated particles to show tech symbols (AI, GPT, ML, CODE, etc.) instead of trading symbols
+- Changed branding from PROPFIRM to AICHAT throughout
+- Updated hero section to "Intelligent AI Assistant — Powered by OpenAI"
+- Redesigned sections: Features (streaming, models, history), AI Models showcase, relevant stats
+- Updated login/signup pages with AI chat messaging
+- Maintained dark neon aesthetic (#0a0e1a background, #00ff88 accent)
+- Preserved glassmorphism effects and GSAP animations
+- Updated footer with contact information and AI Chat branding
