@@ -186,7 +186,7 @@ Error responses include a descriptive message:
 
 ## Running Locally
 
-The API runs on port 5000:
+The API runs on port 4000:
 ```bash
 python main.py
 ```
