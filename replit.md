@@ -19,6 +19,11 @@ The application features:
 
 Preferred communication style: Simple, everyday language.
 
+## Contact Information
+
+- **Phone**: +91 83406 00849
+- **Email**: mdazruddin.dilansari@gmail.com
+
 ## System Architecture
 
 ### Backend Framework
@@ -54,7 +59,7 @@ Preferred communication style: Simple, everyday language.
 - **Technology**: HTML5, CSS3, Vanilla JavaScript
 - **Design**: Modern teal-blue gradient theme with mobile-responsive layout
 - **Pages**:
-  - **Homepage** (`/`): Landing page with hero section, feature cards, and floating chat widget
+  - **Homepage** (`/`): Landing page with hero section, feature cards, floating chat widget, and contact footer
   - **Full Chat** (`/chat`): Dedicated chat interface with model selector
 - **Chat Widget Features**:
   - Floating button in bottom-right corner
@@ -67,10 +72,16 @@ Preferred communication style: Simple, everyday language.
   - Conversation history with user/assistant message bubbles
   - Typing indicators and smooth animations
 
+### Navigation
+- **Home**: Landing page with hero section and features
+- **Chat**: Full-screen chat interface
+- **Service**: Placeholder for future features
+- **Contacts**: Scrolls to contact footer with phone and email information
+
 ### API Endpoints
 1. **Homepage** (`GET /`)
-   - Purpose: Serve the landing page with hero section and chat widget
-   - Returns: HTML page with hero section, features, and floating chat assistant
+   - Purpose: Serve the landing page with hero section, features, chat widget, and contact footer
+   - Returns: HTML page with hero section, features, floating chat assistant, and contact information
 
 2. **Full Chat** (`GET /chat`)
    - Purpose: Serve the dedicated full-screen chat interface
