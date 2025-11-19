@@ -4,7 +4,7 @@ A REST API that provides access to OpenAI GPT models using your own OpenAI API k
 
 ## Features
 
-- Multiple OpenAI GPT models (GPT-4o, GPT-4.1, GPT-5, and more)
+- Multiple OpenAI GPT models: gpt-4o, gpt-4o-mini, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-preview, o1-mini
 - Regular chat completions with conversation history
 - Streaming responses for real-time output
 - Token usage tracking
@@ -189,9 +189,9 @@ Error responses include a descriptive message:
 
 ## Running Locally
 
-The API runs on port 4000:
+The API runs on port 5000:
 ```bash
-python main.py
+gunicorn --bind 0.0.0.0:5000 --workers 2 --timeout 120 main:app
 ```
 
 ## Configuration

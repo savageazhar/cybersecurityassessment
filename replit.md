@@ -32,10 +32,10 @@ Preferred communication style: Simple, everyday language.
 - **Rationale**: Uses direct OpenAI API access with user's own API key for secure, production-ready deployment
 
 ### Model Support
-- **Available Models**: Multiple GPT variants including GPT-5, GPT-4.1, GPT-4o series, and o-series models
-- **Default Model**: gpt-4o
+- **Available Models**: gpt-4o, gpt-4o-mini, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-preview, o1-mini
+- **Default Model**: gpt-4o-mini
 - **Design Pattern**: Hardcoded model list with validation
-- **Rationale**: Provides controlled access to specific models supported by Replit's AI integration layer
+- **Rationale**: Provides controlled access to specific OpenAI models via direct API integration
 
 ### API Endpoints
 1. **Health Check** (`GET /health`)
