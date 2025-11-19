@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, Response, stream_with_context
+from flask import Flask, request, jsonify, Response, stream_with_context, render_template
 from flask_cors import CORS
 from openai import OpenAI
 import json
@@ -23,6 +23,10 @@ AVAILABLE_MODELS = [
 
 @app.route('/', methods=['GET'])
 def index():
+    return render_template('chat.html')
+
+@app.route('/api', methods=['GET'])
+def api_info():
     return jsonify({
         "name": "OpenAI Chat API",
         "version": "1.0.0",
