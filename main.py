@@ -129,6 +129,7 @@ def signup():
         email = data.get('email', '').strip()
         phone = data.get('phone', '').strip()
         password = data.get('password', '')
+        confirm_password = data.get('confirm_password', '')
         
         if not all([name, email, phone, password]):
             if request.is_json:
@@ -136,10 +137,28 @@ def signup():
             flash('All fields are required', 'error')
             return redirect(url_for('signup'))
         
+        if len(password) < 6:
+            if request.is_json:
+                return jsonify({"error": "Password must be at least 6 characters long"}), 400
+            flash('Password must be at least 6 characters long', 'error')
+            return redirect(url_for('signup'))
+        
+        if password != confirm_password:
+            if request.is_json:
+                return jsonify({"error": "Passwords do not match"}), 400
+            flash('Passwords do not match', 'error')
+            return redirect(url_for('signup'))
+        
         if User.query.filter_by(email=email).first():
             if request.is_json:
                 return jsonify({"error": "Email already registered"}), 400
             flash('Email already registered', 'error')
+            return redirect(url_for('signup'))
+        
+        if User.query.filter_by(phone=phone).first():
+            if request.is_json:
+                return jsonify({"error": "Phone number already registered"}), 400
+            flash('Phone number already registered', 'error')
             return redirect(url_for('signup'))
         
         user = User(name=name, email=email, phone=phone)
