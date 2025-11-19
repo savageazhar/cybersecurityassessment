@@ -1,10 +1,14 @@
-# OpenAI Chat API
+# OpenAI Chat Application
 
 ## Overview
 
-This is a REST API service that provides a secure interface to OpenAI GPT models using the user's own OpenAI API key stored in environment variables.
+This is a complete chat application with both a web interface and REST API that provides access to OpenAI GPT models using the user's own OpenAI API key stored in environment variables.
 
-The API exposes endpoints for health checking, listing available models, and creating chat completions with support for both standard and streaming responses.
+The application features:
+- **Web Chat Interface**: Modern, responsive chat UI with real-time streaming responses
+- **REST API**: Programmatic access for integration with other applications
+- **Multi-Model Support**: Choose from 7 different OpenAI models
+- **Streaming Responses**: See AI responses appear in real-time as they're generated
 
 ## User Preferences
 
@@ -37,21 +41,39 @@ Preferred communication style: Simple, everyday language.
 - **Design Pattern**: Hardcoded model list with validation
 - **Rationale**: Provides controlled access to specific OpenAI models via direct API integration
 
+### Frontend Architecture
+- **Technology**: HTML5, CSS3, Vanilla JavaScript
+- **Design**: Modern gradient-based UI with mobile-responsive layout
+- **Features**:
+  - Real-time streaming chat with word-by-word response display
+  - Model selector dropdown for choosing between 7 GPT models
+  - Conversation history with user/assistant message bubbles
+  - Typing indicators and smooth animations
+  - Buffered SSE parsing to handle chunked responses correctly
+
 ### API Endpoints
-1. **Health Check** (`GET /health`)
+1. **Chat Interface** (`GET /`)
+   - Purpose: Serve the web-based chat interface
+   - Returns: HTML page with embedded CSS and JavaScript
+
+2. **API Info** (`GET /api`)
+   - Purpose: API documentation and endpoint listing
+   - Returns: JSON with API metadata and available endpoints
+
+3. **Health Check** (`GET /health`)
    - Purpose: Service monitoring and availability verification
    - Returns service status and integration type
 
-2. **Model Listing** (`GET /models`)
+4. **Model Listing** (`GET /models`)
    - Purpose: Discover available models programmatically
    - Returns array of model names and default model identifier
 
-3. **Chat Completion** (`POST /chat`)
+5. **Chat Completion** (`POST /chat`)
    - Purpose: Process chat messages and return AI-generated responses
    - Supports conversation history and message formatting
    - Returns complete response with token usage statistics
 
-4. **Streaming Chat** (`POST /chat/stream`)
+6. **Streaming Chat** (`POST /chat/stream`)
    - Purpose: Real-time streaming responses using Server-Sent Events
    - Streams token-by-token for improved user experience
    - Handles conversation history and message formatting
