@@ -414,7 +414,6 @@
 
             addWidgetMessage('user', message);
             widgetInput.value = '';
-            conversationHistory.push({ role: 'user', content: message });
 
             widgetTyping.classList.add('active');
 
@@ -433,6 +432,7 @@
                 const decoder = new TextDecoder();
                 let assistantMessage = '';
                 let messageDiv = null;
+                let buffer = '';
 
                 widgetTyping.classList.remove('active');
 
@@ -440,12 +440,13 @@
                     const { done, value } = await reader.read();
                     if (done) break;
 
-                    const chunk = decoder.decode(value);
-                    const lines = chunk.split('\n');
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || '';
 
                     for (const line of lines) {
                         if (line.startsWith('data: ')) {
-                            const data = line.slice(6);
+                            const data = line.slice(6).trim();
                             if (data === '[DONE]') continue;
 
                             try {
@@ -463,6 +464,24 @@
                     }
                 }
 
+                if (buffer && buffer.startsWith('data: ')) {
+                    const data = buffer.slice(6).trim();
+                    if (data !== '[DONE]') {
+                        try {
+                            const parsed = JSON.parse(data);
+                            if (parsed.content) {
+                                assistantMessage += parsed.content;
+                                if (!messageDiv) {
+                                    messageDiv = addWidgetMessage('assistant', '');
+                                }
+                                messageDiv.textContent = assistantMessage;
+                                widgetMessages.scrollTop = widgetMessages.scrollHeight;
+                            }
+                        } catch (e) {}
+                    }
+                }
+
+                conversationHistory.push({ role: 'user', content: message });
                 conversationHistory.push({ role: 'assistant', content: assistantMessage });
 
             } catch (error) {
