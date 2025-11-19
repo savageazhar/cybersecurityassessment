@@ -14,8 +14,16 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-i
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['WTF_CSRF_ENABLED'] = True
+app.config['WTF_CSRF_TIME_LIMIT'] = None
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
-CORS(app)
+CORS(app, supports_credentials=True, resources={
+    r"/chat/*": {"origins": "*"},
+    r"/api": {"origins": "*"},
+    r"/models": {"origins": "*"},
+    r"/health": {"origins": "*"}
+})
 csrf = CSRFProtect(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
