@@ -23,9 +23,13 @@ app.config['WTF_CSRF_ENABLED'] = True
 app.config['WTF_CSRF_TIME_LIMIT'] = None
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = False
+app.config['REMEMBER_COOKIE_HTTPONLY'] = True
+app.config['REMEMBER_COOKIE_SECURE'] = False
+app.config['REMEMBER_COOKIE_DURATION'] = 2592000
+app.config['PERMANENT_SESSION_LIFETIME'] = 2592000
 
-CORS(app, supports_credentials=True, resources={
-    r"/chat/*": {"origins": "*"},
+CORS(app, supports_credentials=False, resources={
     r"/api": {"origins": "*"},
     r"/models": {"origins": "*"},
     r"/health": {"origins": "*"}
@@ -76,6 +80,8 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('chat_page'))
     return render_template('prop_firm.html')
 
 @app.route('/about')
@@ -83,7 +89,6 @@ def about():
     return render_template('about.html')
 
 @app.route('/login', methods=['GET', 'POST'])
-@csrf.exempt
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
@@ -105,7 +110,10 @@ def login():
         ).first()
         
         if user and user.check_password(password):
-            login_user(user)
+            login_user(user, remember=True)
+            session.permanent = True
+            app.logger.info(f"✅ Login successful - User: {user.email}, Session ID: {session.get('_user_id')}")
+            
             if request.is_json:
                 return jsonify({
                     "message": "Login successful",
@@ -115,8 +123,11 @@ def login():
                         "email": user.email
                     }
                 }), 200
+            
+            flash('Login successful! Welcome back!', 'success')
             return redirect(url_for('chat_page'))
         
+        app.logger.warning(f"❌ Login failed - Invalid credentials for: {email_or_phone}")
         if request.is_json:
             return jsonify({"error": "Invalid credentials"}), 401
         flash('Invalid email/phone or password', 'error')
@@ -124,7 +135,6 @@ def login():
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
-@csrf.exempt
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
@@ -178,9 +188,6 @@ def signup():
             
             app.logger.info(f"✅ User created successfully - ID: {user.id}, Email: {user.email}")
             
-            login_user(user, remember=True)
-            app.logger.info(f"✅ User logged in - Authenticated: {current_user.is_authenticated}")
-            
             if request.is_json:
                 return jsonify({
                     "message": "Signup successful",
@@ -190,8 +197,8 @@ def signup():
                         "email": user.email
                     }
                 }), 201
-            flash('Account created successfully! Welcome to AI Chat!', 'success')
-            return redirect(url_for('chat_page'))
+            flash('Account created successfully! Please login to continue.', 'success')
+            return redirect(url_for('login'))
         except Exception as e:
             db.session.rollback()
             app.logger.error(f"❌ Signup error: {str(e)}")
@@ -265,7 +272,6 @@ def get_models():
     }), 200
 
 @app.route('/chat', methods=['POST'])
-@csrf.exempt
 @login_required
 def chat():
     try:
@@ -328,7 +334,6 @@ def chat():
         }), 500
 
 @app.route('/chat/stream', methods=['POST'])
-@csrf.exempt
 @login_required
 def chat_stream():
     try:
