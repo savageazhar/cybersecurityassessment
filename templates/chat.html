@@ -697,6 +697,30 @@
             box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
         }
 
+        .image-prompt {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .image-prompt:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .image-prompt::placeholder {
+            color: var(--text-secondary);
+        }
+
         .setting-group input[type="checkbox"] {
             width: 18px;
             height: 18px;
@@ -856,6 +880,13 @@
                             <line x1="8" y1="23" x2="16" y2="23"></line>
                         </svg>
                     </button>
+                    <button type="button" class="voice-btn image-btn" id="imageBtn" title="Generate Image">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                    </button>
                     <textarea 
                         class="chat-input" 
                         id="messageInput" 
@@ -913,6 +944,33 @@
                 </div>
                 <div class="setting-group">
                     <button id="testVoiceBtn" class="test-voice-btn">🔊 Test Voice</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Generation Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🖼️ Generate Image with Nano Banana</h2>
+                <button class="close-modal" id="closeImageModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Image Description:</label>
+                    <textarea id="imagePrompt" class="image-prompt" rows="4" placeholder="Describe the image you want to generate...&#10;Example: A futuristic city at sunset with neon lights and flying cars, cyberpunk style"></textarea>
+                </div>
+                <div class="setting-group">
+                    <button id="generateImageBtn" class="test-voice-btn">✨ Generate Image</button>
+                </div>
+                <div id="imagePreview" style="display: none; margin-top: 20px;">
+                    <p style="color: var(--text-secondary); margin-bottom: 10px;">Generated Image:</p>
+                    <img id="generatedImage" style="max-width: 100%; border-radius: 12px; border: 1px solid var(--glass-border);" />
+                    <button id="insertImageBtn" class="test-voice-btn" style="margin-top: 15px;">📤 Send to Chat</button>
+                </div>
+                <div id="imageLoading" style="display: none; text-align: center; padding: 20px;">
+                    <div style="color: var(--neon-green);">⚡ Generating image...</div>
                 </div>
             </div>
         </div>
@@ -1442,6 +1500,114 @@
                 } else {
                     startRecording();
                 }
+            }
+        });
+
+        // ========== IMAGE GENERATION FUNCTIONALITY ==========
+        
+        const imageBtn = document.getElementById('imageBtn');
+        const imageModal = document.getElementById('imageModal');
+        const closeImageModal = document.getElementById('closeImageModal');
+        const imagePrompt = document.getElementById('imagePrompt');
+        const generateImageBtn = document.getElementById('generateImageBtn');
+        const imagePreview = document.getElementById('imagePreview');
+        const generatedImage = document.getElementById('generatedImage');
+        const insertImageBtn = document.getElementById('insertImageBtn');
+        const imageLoading = document.getElementById('imageLoading');
+        
+        let lastGeneratedImageData = null;
+        
+        // Open image modal
+        imageBtn.addEventListener('click', () => {
+            imageModal.classList.add('active');
+        });
+        
+        // Close image modal
+        closeImageModal.addEventListener('click', () => {
+            imageModal.classList.remove('active');
+        });
+        
+        // Close modal on background click
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
+            }
+        });
+        
+        // Generate image
+        generateImageBtn.addEventListener('click', async () => {
+            const prompt = imagePrompt.value.trim();
+            
+            if (!prompt) {
+                alert('Please enter an image description');
+                return;
+            }
+            
+            // Show loading
+            imageLoading.style.display = 'block';
+            imagePreview.style.display = 'none';
+            generateImageBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/image/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ prompt })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Display generated image
+                    lastGeneratedImageData = data;
+                    generatedImage.src = `data:${data.mime_type};base64,${data.image}`;
+                    imagePreview.style.display = 'block';
+                    imageLoading.style.display = 'none';
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to generate image'));
+                    imageLoading.style.display = 'none';
+                }
+            } catch (error) {
+                alert('Error generating image: ' + error.message);
+                imageLoading.style.display = 'none';
+            } finally {
+                generateImageBtn.disabled = false;
+            }
+        });
+        
+        // Insert generated image into chat
+        insertImageBtn.addEventListener('click', () => {
+            if (lastGeneratedImageData) {
+                // Add image message to chat
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message user-message';
+                
+                const imgElement = document.createElement('img');
+                imgElement.src = `data:${lastGeneratedImageData.mime_type};base64,${lastGeneratedImageData.image}`;
+                imgElement.style.maxWidth = '400px';
+                imgElement.style.borderRadius = '12px';
+                imgElement.style.marginTop = '10px';
+                
+                const caption = document.createElement('p');
+                caption.textContent = `🖼️ Generated: ${lastGeneratedImageData.prompt}`;
+                caption.style.marginBottom = '10px';
+                caption.style.fontStyle = 'italic';
+                
+                messageDiv.appendChild(caption);
+                messageDiv.appendChild(imgElement);
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Close modal and reset
+                imageModal.classList.remove('active');
+                imagePrompt.value = '';
+                imagePreview.style.display = 'none';
+                lastGeneratedImageData = null;
             }
         });
 

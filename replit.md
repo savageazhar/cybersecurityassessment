@@ -2,355 +2,53 @@
 
 ## Overview
 
-A cutting-edge AI chat application with user authentication, OpenAI GPT integration, and a stunning futuristic dark-neon interface. **Kimi AI** provides seamless access to multiple AI models for intelligent conversations and assistance with real-time streaming responses.
-
-The application features:
-- **Landing Page**: Futuristic Kimi AI website with dark theme (#0a0e1a), neon green accents (#00ff88), and animated tech particles
-- **User Authentication**: Secure signup/login system with PostgreSQL database storage and 30-day persistent sessions
-- **Enhanced Chat Interface**: 
-  - Real-time streaming responses with typing cursor animation
-  - Markdown rendering with syntax highlighting (Marked.js + Highlight.js)
-  - Copy buttons for code blocks
-  - Token usage tracking and statistics display
-  - Message counter
-  - Clear chat functionality
-  - Glassmorphism design with particle background
-- **Professional Voice Features**: 
-  - Speech-to-text (STT) using OpenAI Whisper for voice input
-  - Text-to-speech (TTS) with 6 voice options for AI responses
-  - Real-time voice visualizer with waveform animation
-  - Auto-play toggle for automatic AI response playback
-  - Manual playback buttons on every AI message
-  - Voice settings modal (voice selection, speed control 0.25-4.0x)
-  - Keyboard shortcut (Ctrl+Shift+V) for quick voice recording
-- **REST API**: Programmatic access for chat completions, streaming, and voice features
-- **Multi-Model Support**: Choose from 6 different OpenAI models (GPT-4o, GPT-4.1 series, GPT-3.5)
-- **Streaming Responses**: Real-time AI responses with word-by-word display and visual feedback
-- **Token Usage Tracking**: Live monitoring of API usage, message count, and model selection
-- **CORS Enabled**: Ready for cross-origin requests from web applications
+Kimi AI is a cutting-edge AI chat application designed for intelligent conversations and assistance, featuring user authentication, OpenAI GPT integration, and a futuristic dark-neon interface. It provides seamless access to multiple AI models with real-time streaming responses, professional voice features (STT and TTS), and a robust REST API. The project aims to offer a visually stunning and highly functional AI interaction platform.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
 
-## Contact Information
-
-- **Phone**: +91 83406 00849
-- **Email**: mdazruddin.dilansari@gmail.com
-
 ## System Architecture
 
 ### Backend Framework
 - **Technology**: Flask (Python web framework)
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Authentication**: Flask-Login with session-based auth
-- **Security**: CSRF protection with Flask-WTF, password hashing with Werkzeug
-- **Key Features**:
-  - RESTful API endpoints
-  - Session management
-  - Database models for user management
-  - OpenAI SDK integration
+- **Database**: PostgreSQL with SQLAlchemy ORM for user management.
+- **Authentication**: Flask-Login for session-based authentication, Flask-WTF for CSRF protection, and Werkzeug for password hashing.
+- **API**: RESTful API endpoints for chat completions, streaming, and voice features.
 
 ### Frontend Architecture
-- **Design Theme**: Dark futuristic AI-focused style
-  - Dark background (#0a0e1a)
-  - Neon green accents (#00ff88)
-  - Glassmorphism effects with backdrop blur
-  - Animated particle backgrounds with tech symbols
-  - GSAP-powered scroll animations
-- **Technology Stack**:
-  - HTML5, CSS3, Vanilla JavaScript
-  - GSAP for animations
-  - Custom particle system with canvas
-  - Font Awesome icons
-  - Fully responsive design
-
-### Pages & Routes
-
-#### Public Pages
-1. **Homepage** (`GET /`)
-   - Modern AI Chat landing page (prop_firm.html)
-   - Hero section: "Intelligent AI Assistant — Powered by OpenAI"
-   - Transparent navbar with glass effect
-   - Navigation: Home, Features, Models, About, Contact
-   - Actions: Language Selector, Login/Register, Start Chatting buttons
-   - Sections: Features (streaming, models, history), AI Models (GPT-4o, GPT-4.1, GPT-4o Mini), Stats, About
-   - Animated particle background with tech symbols (AI, GPT, ML, CODE, API, TECH, DATA, { }, </>, ∞)
-   - Cookie consent banner
-   - Social media icons (fixed bottom-left)
-   - Play button for intro video
-   - Scroll-to-explore indicator
-
-2. **Login Page** (`GET/POST /login`)
-   - AI Chat themed login interface
-   - Email/phone and password authentication
-   - CSRF-protected form submissions
-   - Animated tech elements background (AI, GPT-4, ∞)
-   - Split layout with AI features showcase
-   - Link to signup page
-
-3. **Signup Page** (`GET/POST /signup`)
-   - AI Chat themed registration interface
-   - Fields: name, email, phone, password
-   - CSRF-protected form submissions
-   - Benefits showcase section (free access, multiple models, conversation history, streaming)
-   - Animated tech background (GPT, AI, 4.0)
-   - Link to login page
-
-4. **About Page** (`GET /about`)
-   - Company/platform information
-   - AI Chat theme
-
-#### Protected Pages (Require Login)
-5. **Chat Interface** (`GET /chat`)
-   - Futuristic Kimi AI themed interface (dark #0a0e1a, neon green #00ff88)
-   - Glassmorphism design with animated particle background
-   - Model selector dropdown (6 GPT models)
-   - Real-time streaming responses with typing cursor animation
-   - Markdown rendering with syntax highlighting (Marked.js + Highlight.js)
-   - Copy buttons for code blocks
-   - Conversation history management
-   - Clear chat functionality
-   - Live stats tracking:
-     - Message counter
-     - Token usage display
-     - Current model indicator
-   - Auto-resizing textarea input
-   - Shift+Enter for new line, Enter to send
-   - Logout functionality
-
-### Database Schema
-
-#### Users Table
-- `id`: Integer, Primary Key
-- `name`: String(100), Not Null
-- `email`: String(120), Unique, Not Null
-- `phone`: String(20), Not Null
-- `password_hash`: String(255), Not Null
-- `created_at`: DateTime, Default UTC Now
-
-### Authentication System
-- **Session-Based**: Flask-Login manages user sessions
-- **Password Security**: Werkzeug password hashing (bcrypt)
-- **CSRF Protection**: 
-  - Global CSRFProtect enabled
-  - Login/signup routes use @csrf.exempt with manual validation
-  - Form submissions require valid CSRF tokens
-  - JSON API requests exempted from CSRF
-  - Chat endpoints (@csrf.exempt) for API usage
-- **Protected Routes**: @login_required decorator on chat endpoints
-- **Redirect Logic**: Authenticated users redirected to chat, unauthenticated to login
-
-### API Endpoints
-
-#### Authentication
-1. **Login** (`POST /login`)
-   - Accepts: form data or JSON
-   - Returns: redirect to chat (form) or JSON response
-   - CSRF: validated for form submissions
-
-2. **Signup** (`POST /signup`)
-   - Accepts: form data or JSON
-   - Creates new user account
-   - CSRF: validated for form submissions
-
-3. **Logout** (`GET /logout`)
-   - Ends user session
-   - Redirects to homepage
-
-#### AI Chat (Protected)
-4. **Chat Completion** (`POST /chat`)
-   - Requires authentication
-   - CSRF exempt (JSON API)
-   - Returns complete AI response with token stats
-
-5. **Streaming Chat** (`POST /chat/stream`)
-   - Requires authentication
-   - CSRF exempt (JSON API)
-   - Server-Sent Events for real-time streaming
-
-#### Voice Features (Protected)
-6. **Text-to-Speech** (`POST /voice/tts`)
-   - Requires authentication
-   - CSRF protected
-   - Converts text to speech using OpenAI TTS
-   - Supports 6 voices: alloy, echo, shimmer, onyx, fable, nova
-   - Speed control: 0.25-4.0x
-   - Returns base64-encoded audio (MP3)
-
-7. **Speech-to-Text** (`POST /voice/stt`)
-   - Requires authentication
-   - CSRF protected
-   - Transcribes audio using OpenAI Whisper
-   - Accepts audio file (WebM, WAV, MP3, etc.)
-   - Returns transcribed text
-
-8. **Voice Settings** (`GET /voice/settings`)
-   - Read-only endpoint
-   - Returns available voices and voice options
-
-#### Utility
-9. **API Info** (`GET /api`)
-   - API documentation
-
-10. **Health Check** (`GET /health`)
-    - Service status monitoring
-
-11. **Model Listing** (`GET /models`)
-    - Available OpenAI models
-
-### Static Assets
-
-#### CSS
-- `static/css/prop_firm.css`
-  - Complete styling for landing page
-  - Dark theme with CSS variables
-  - Glassmorphism card effects
-  - Responsive breakpoints (mobile, tablet, desktop)
-  - Animations and transitions
-  - Accessibility (prefers-reduced-motion)
-
-#### JavaScript
-- `static/js/prop_firm.js`
-  - GSAP ScrollTrigger animations
-  - Scroll effects and parallax
-  - Counter animations for stats
-  - Cookie consent handling
-  - Video modal functionality
-  - Mobile menu toggle
-  - Floating element animations
-  - Glassmorphism hover effects
-
-- `static/js/particles.js`
-  - Custom particle system using Canvas API
-  - Floating numbers, currency symbols, trading pairs
-  - Connection lines between particles
-  - Pulse animations
-  - Performance optimized with requestAnimationFrame
-
-### Animation System
-- **GSAP**: Professional-grade JavaScript animation library
-  - ScrollTrigger for scroll-based animations
-  - Smooth parallax effects
-  - Card entrance animations
-  - Floating button animations
-  - Counter number animations
-- **CSS Animations**: 
-  - Glow effects on text
-  - Floating elements
-  - Pulse animations
-  - Smooth transitions
-- **Particle System**:
-  - Tech symbols (AI, GPT, ML, CODE, DATA, TECH, API)
-  - Programming symbols ({ }, </>, +, -, *, /, <, >, =, ∞)
-  - Numbers and mathematical elements
-  - Dynamic connections between particles
+- **Design Theme**: Futuristic dark AI-focused style with a dark background (`#0a0e1a`), neon green accents (`#00ff88`), glassmorphism effects, and animated particle backgrounds.
+- **Technology Stack**: HTML5, CSS3, Vanilla JavaScript, GSAP for animations, Custom Canvas particle system, Font Awesome for icons, and fully responsive design.
+- **Key Features**:
+    - **Chat Interface**: Real-time streaming responses with typing animation, Markdown rendering (Marked.js), syntax highlighting (Highlight.js), copy buttons for code, token usage tracking, message counter, and clear chat functionality.
+    - **Voice Features**: Speech-to-text (OpenAI Whisper), Text-to-speech (OpenAI TTS with 6 voice options and speed control), real-time voice visualizer, auto-play toggle, and manual playback buttons.
+    - **Pages**:
+        - **Public**: Homepage, Login, Signup, About pages, all themed with Kimi AI branding and animations.
+        - **Protected**: Main Chat Interface with model selection, conversation history, and live statistics.
 
 ### Design System
-
-#### Colors
-- `--neon-green`: #00ff88 (Primary accent)
-- `--dark-bg`: #0a0e1a (Background)
-- `--glass-bg`: rgba(255, 255, 255, 0.05) (Cards)
-- `--glass-border`: rgba(255, 255, 255, 0.1) (Borders)
-- `--text-primary`: #ffffff (Main text)
-- `--text-secondary`: #94a3b8 (Secondary text)
-
-#### Components
-- **Glassmorphism Cards**: backdrop-filter blur with transparent backgrounds
-- **Neon Glow Text**: Gradient text with glow shadows
-- **Glass Navbar**: Fixed transparent navigation with blur
-- **Gradient Buttons**: Neon green gradients with hover effects
-- **Floating Elements**: Animated currency/trading symbols
-- **Cookie Consent**: Glass card with Accept/Decline buttons
-- **Social Icons**: Fixed bottom-left with hover animations
-
-#### Responsive Design
-- **Desktop**: 1200px+ (full layout)
-- **Tablet**: 768-1199px (adjusted grids)
-- **Mobile**: <768px (single column, hamburger menu)
-
-### OpenAI Integration
-- **Available Models**: 6 models
-  - gpt-4o, gpt-4o-mini
-  - gpt-4.1, gpt-4.1-mini, gpt-4.1-nano
-  - gpt-3.5-turbo
-- **Default Model**: gpt-4o-mini
-- **API Key**: Environment variable `OPENAI_API_KEY_CYB_SEC`
-- **Features**: 
-  - Streaming responses
-  - Token usage tracking
-  - Conversation history
-  - Error handling
+- **Colors**: Primarily `--neon-green` (#00ff88) and `--dark-bg` (#0a0e1a), with `--glass-bg` for transparent elements.
+- **Components**: Glassmorphism cards, neon glow text, glass navbar, gradient buttons, and floating animated elements.
+- **Animations**: GSAP for scroll animations, parallax effects, and element transitions; CSS animations for glow and pulse effects; custom Canvas-based particle system displaying tech symbols.
 
 ### Security Features
-1. **CSRF Protection**: Flask-WTF with manual validation for forms
-2. **Password Hashing**: Werkzeug security functions
-3. **Session Management**: Flask-Login secure sessions
-4. **SQL Injection Prevention**: SQLAlchemy ORM parameterized queries
-5. **Environment Variables**: Sensitive data in env vars
-6. **HTTPS Ready**: Secure headers and cookie settings
+- CSRF Protection (Flask-WTF), password hashing (Werkzeug), secure session management (Flask-Login), SQL injection prevention (SQLAlchemy), and environment variable usage for sensitive data.
 
-### External Dependencies
+## External Dependencies
 
-#### Python Packages
-- Flask: Web framework
-- Flask-CORS: Cross-origin resource sharing
-- Flask-SQLAlchemy: Database ORM
-- Flask-Login: Session management
-- Flask-WTF: CSRF protection and forms
-- Werkzeug: Password hashing
-- OpenAI: Official Python SDK
-- Gunicorn: Production WSGI server
-- psycopg2-binary: PostgreSQL adapter
-- email-validator: Email validation
+### Python Packages
+- **Flask**: Web framework
+- **Flask-CORS**: Cross-origin resource sharing
+- **Flask-SQLAlchemy**: Database ORM
+- **Flask-Login**: User session management
+- **Flask-WTF**: CSRF protection and forms
+- **Werkzeug**: Password hashing
+- **OpenAI**: Official Python SDK for AI model integration
+- **psycopg2-binary**: PostgreSQL adapter
+- **email-validator**: Email validation
 
-#### Frontend Libraries (CDN)
-- Font Awesome 6.4.0: Icons
-- GSAP 3.12.2: Animations
-- ScrollTrigger: Scroll animations
-- Marked.js 11.0.0: Markdown rendering
-- Highlight.js 11.9.0: Code syntax highlighting
-
-### Infrastructure
-- **Hosting**: Replit
-- **Runtime**: Python 3.11
-- **Web Server**: Gunicorn (2 workers, 120s timeout)
-- **Database**: PostgreSQL (Neon-backed)
-- **Port**: 5000 (bound to 0.0.0.0)
-
-### Environment Variables Required
-- `DATABASE_URL`: PostgreSQL connection string
-- `OPENAI_API_KEY_CYB_SEC`: OpenAI API key
-- `SECRET_KEY`: Flask session secret (auto-generated in dev)
-
-### Recent Updates (November 2025)
-- **Complete Kimi AI Rebranding**: Transformed entire website from "AI Chat" to "Kimi AI" across all pages
-- Updated homepage branding with "KIMI AI" logo and futuristic messaging
-- Updated particle animations to display "KIMI" alongside AI, GPT, ML, CODE, DATA, TECH symbols
-- Redesigned login/signup/about pages with Kimi AI branding
-- **Enhanced Chat Interface**:
-  - Redesigned with futuristic dark theme (#0a0e1a background, #00ff88 neon green accents)
-  - Added glassmorphism design with animated particle background
-  - Implemented markdown rendering with Marked.js for rich text AI responses
-  - Added syntax highlighting with Highlight.js (GitHub Dark theme) for code blocks
-  - Added copy buttons for all code blocks with visual feedback
-  - Enhanced streaming with typing cursor animation during response generation
-  - Added live statistics bar showing message count, token usage, and current model
-  - Implemented clear chat functionality with confirmation
-  - Auto-resizing textarea with Shift+Enter for new lines
-  - Improved message styling with neon green gradients and glass effects
-- **Professional Voice Features Implemented**:
-  - Backend: 3 secure voice endpoints (TTS, STT, settings) with CSRF protection
-  - Speech-to-Text: OpenAI Whisper API for voice input transcription
-  - Text-to-Speech: OpenAI TTS API with 6 voice options (alloy, echo, shimmer, onyx, fable, nova)
-  - Voice UI: Microphone button with real-time waveform visualizer using Canvas
-  - Auto-play: Toggle for automatic AI response playback
-  - Manual Playback: Speaker buttons automatically added to every AI message
-  - Settings Modal: Voice selection, speed control (0.25-4.0x), auto-play toggle, test voice button
-  - Keyboard Shortcuts: Ctrl+Shift+V for quick voice recording
-  - Security: All voice endpoints protected by @login_required with CSRF validation
-  - Resource Management: Proper cleanup of MediaRecorder streams, blob URLs, and audio elements
-- Maintained dark neon aesthetic (#0a0e1a background, #00ff88 accent) throughout
-- Preserved glassmorphism effects and GSAP animations
-- Updated footer with contact information and Kimi AI branding
+### Frontend Libraries (CDN)
+- **Font Awesome 6.4.0**: Icons
+- **GSAP 3.12.2** & **ScrollTrigger**: Advanced animations
+- **Marked.js 11.0.0**: Markdown rendering
+- **Highlight.js 11.9.0**: Code syntax highlighting

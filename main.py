@@ -8,6 +8,7 @@ from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from openai import OpenAI
+from google import genai
 import json
 import io
 import base64
@@ -46,6 +47,15 @@ login_manager.login_view = 'login'
 client = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY_CYB_SEC")
 )
+
+# Initialize Google GenAI client for Nano Banana (image generation)
+nano_banana_api_key = os.environ.get("GO_BANAN_API_KEY")
+if nano_banana_api_key:
+    genai_client = genai.Client(api_key=nano_banana_api_key)
+    NANO_BANANA_AVAILABLE = True
+else:
+    genai_client = None
+    NANO_BANANA_AVAILABLE = False
 
 AVAILABLE_MODELS = [
     "gpt-4o",
@@ -543,6 +553,167 @@ def voice_settings():
             "tts": "tts-1",
             "stt": "whisper-1"
         }
+    }), 200
+
+@app.route('/image/generate', methods=['POST'])
+@login_required
+def generate_image():
+    """Generate image using Google Nano Banana (Gemini 2.5 Flash Image)"""
+    try:
+        if not NANO_BANANA_AVAILABLE:
+            return jsonify({"error": "Image generation is not configured. Missing GO_BANAN_API_KEY."}), 503
+        
+        data = request.get_json()
+        prompt = data.get('prompt', '').strip()
+        
+        if not prompt:
+            return jsonify({"error": "Prompt is required"}), 400
+        
+        # Create proper Content structure
+        from google.genai import types
+        content = types.Content(
+            role='user',
+            parts=[types.Part(text=prompt)]
+        )
+        
+        # Generate image using Nano Banana
+        app.logger.info(f"Generating image with prompt: {prompt[:100]}")
+        response = genai_client.models.generate_content(
+            model='gemini-2.5-flash-image',
+            contents=content
+        )
+        
+        # Extract image data from response with proper error handling
+        if response and hasattr(response, 'candidates'):
+            for candidate in response.candidates:
+                if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                    for part in candidate.content.parts:
+                        if hasattr(part, 'inline_data') and part.inline_data:
+                            image_bytes = part.inline_data.data
+                            mime_type = part.inline_data.mime_type
+                            
+                            # Encode bytes to base64 string for JSON serialization
+                            image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+                            app.logger.info(f"Successfully generated image, size: {len(image_bytes)} bytes")
+                            
+                            return jsonify({
+                                "success": True,
+                                "image": image_base64,
+                                "mime_type": mime_type,
+                                "prompt": prompt,
+                                "model": "gemini-2.5-flash-image"
+                            }), 200
+        
+        # No image in response - likely safety block or model issue
+        app.logger.warning("No image data in Gemini response - possible safety block or model error")
+        return jsonify({"error": "No image generated. The model may have blocked the request for safety reasons."}), 502
+        
+    except Exception as e:
+        app.logger.error(f"Image generation error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/image/edit', methods=['POST'])
+@login_required
+def edit_image():
+    """Edit image using Google Nano Banana with text prompts"""
+    try:
+        if not NANO_BANANA_AVAILABLE:
+            return jsonify({"error": "Image editing is not configured. Missing GO_BANAN_API_KEY."}), 503
+        
+        data = request.get_json()
+        prompt = data.get('prompt', '').strip()
+        image_data = data.get('image')  # Base64 encoded image
+        mime_type = data.get('mime_type', 'image/jpeg')  # Get MIME type from request
+        
+        if not prompt or not image_data:
+            return jsonify({"error": "Prompt and image are required"}), 400
+        
+        # Sanitize base64 string - remove data URL prefix if present
+        if ',' in image_data and image_data.startswith('data:'):
+            # Extract MIME type from data URL
+            mime_prefix = image_data.split(',')[0]
+            if 'image/' in mime_prefix:
+                mime_type = mime_prefix.split(':')[1].split(';')[0]
+            image_data = image_data.split(',', 1)[1]
+        
+        # Decode base64 string to bytes
+        try:
+            decoded_image_bytes = base64.b64decode(image_data)
+            app.logger.info(f"Successfully decoded image data, size: {len(decoded_image_bytes)} bytes")
+        except Exception as decode_error:
+            app.logger.error(f"Base64 decode error: {str(decode_error)}")
+            return jsonify({"error": f"Invalid base64 image data: {str(decode_error)}"}), 400
+        
+        # Create proper Content structure with role and parts using InlineData
+        from google.genai import types
+        inline_data = types.InlineData(
+            mime_type=mime_type,
+            data=decoded_image_bytes
+        )
+        
+        content = types.Content(
+            role='user',
+            parts=[
+                types.Part(text=prompt),
+                types.Part(inline_data=inline_data)
+            ]
+        )
+        
+        # Generate edited image
+        app.logger.info(f"Editing image with prompt: {prompt[:100]}, MIME: {mime_type}")
+        response = genai_client.models.generate_content(
+            model='gemini-2.5-flash-image',
+            contents=content
+        )
+        
+        # Extract edited image from response with proper error handling
+        if response and hasattr(response, 'candidates'):
+            for candidate in response.candidates:
+                if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                    for part in candidate.content.parts:
+                        if hasattr(part, 'inline_data') and part.inline_data:
+                            edited_image_bytes = part.inline_data.data
+                            response_mime = part.inline_data.mime_type
+                            
+                            # Encode bytes to base64 string for JSON serialization
+                            edited_image_base64 = base64.b64encode(edited_image_bytes).decode('utf-8')
+                            app.logger.info(f"Successfully edited image, returned {len(edited_image_bytes)} bytes")
+                            
+                            return jsonify({
+                                "success": True,
+                                "image": edited_image_base64,
+                                "mime_type": response_mime,
+                                "prompt": prompt,
+                                "model": "gemini-2.5-flash-image"
+                            }), 200
+        
+        # No image in response - likely safety block or model issue
+        app.logger.warning("No image data in Gemini response - possible safety block or model error")
+        return jsonify({"error": "No edited image generated. The model may have blocked the request for safety reasons."}), 502
+        
+    except Exception as e:
+        app.logger.error(f"Image editing error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/image/capabilities', methods=['GET'])
+@login_required
+def image_capabilities():
+    """Get image generation capabilities"""
+    return jsonify({
+        "available": NANO_BANANA_AVAILABLE,
+        "model": "gemini-2.5-flash-image" if NANO_BANANA_AVAILABLE else None,
+        "features": {
+            "text_to_image": True,
+            "image_editing": True,
+            "multi_image_fusion": True,
+            "character_consistency": True,
+            "natural_language_editing": True,
+            "object_removal": True,
+            "background_replacement": True,
+            "style_transfer": True
+        } if NANO_BANANA_AVAILABLE else {},
+        "pricing": "$0.039 per image" if NANO_BANANA_AVAILABLE else None,
+        "max_resolution": "4K" if NANO_BANANA_AVAILABLE else None
     }), 200
 
 if __name__ == '__main__':
