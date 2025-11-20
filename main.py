@@ -1,13 +1,16 @@
 import os
 from datetime import datetime
-from flask import Flask, request, jsonify, Response, stream_with_context, render_template, redirect, url_for, flash, session
+from flask import Flask, request, jsonify, Response, stream_with_context, render_template, redirect, url_for, flash, session, send_file
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from openai import OpenAI
 import json
+import io
+import base64
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
@@ -51,6 +54,15 @@ AVAILABLE_MODELS = [
     "gpt-4.1-mini",
     "gpt-4.1-nano",
     "gpt-3.5-turbo"
+]
+
+AVAILABLE_VOICES = [
+    {"id": "alloy", "name": "Alloy", "description": "Neutral and balanced"},
+    {"id": "echo", "name": "Echo", "description": "Warm and engaging"},
+    {"id": "fable", "name": "Fable", "description": "Expressive storyteller"},
+    {"id": "onyx", "name": "Onyx", "description": "Deep and authoritative"},
+    {"id": "nova", "name": "Nova", "description": "Energetic and friendly"},
+    {"id": "shimmer", "name": "Shimmer", "description": "Soft and gentle"}
 ]
 
 class User(UserMixin, db.Model):
@@ -412,6 +424,110 @@ def chat_stream():
         return jsonify({
             "error": str(e)
         }), 500
+
+# Voice Endpoints
+@app.route('/voice/tts', methods=['POST'])
+@login_required
+def text_to_speech():
+    """Convert text to speech using OpenAI TTS"""
+    try:
+        data = request.get_json()
+        
+        if not data or 'text' not in data:
+            return jsonify({"error": "Missing 'text' field"}), 400
+        
+        text = data['text']
+        voice = data.get('voice', 'alloy')
+        speed = data.get('speed', 1.0)
+        
+        # Validate voice
+        valid_voices = [v['id'] for v in AVAILABLE_VOICES]
+        if voice not in valid_voices:
+            return jsonify({"error": f"Invalid voice. Choose from: {', '.join(valid_voices)}"}), 400
+        
+        # Validate speed (0.25 to 4.0)
+        if not (0.25 <= speed <= 4.0):
+            return jsonify({"error": "Speed must be between 0.25 and 4.0"}), 400
+        
+        # Generate speech
+        response = client.audio.speech.create(
+            model="tts-1",
+            voice=voice,
+            input=text,
+            speed=speed
+        )
+        
+        # Convert to base64 for JSON response
+        audio_bytes = response.content
+        audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
+        
+        return jsonify({
+            "audio": audio_base64,
+            "format": "mp3",
+            "voice": voice,
+            "speed": speed
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/voice/stt', methods=['POST'])
+@login_required
+def speech_to_text():
+    """Convert speech to text using OpenAI Whisper"""
+    try:
+        if 'audio' not in request.files:
+            return jsonify({"error": "No audio file provided"}), 400
+        
+        audio_file = request.files['audio']
+        
+        if audio_file.filename == '':
+            return jsonify({"error": "No selected file"}), 400
+        
+        # Read audio data
+        audio_data = audio_file.read()
+        
+        # Create file-like object for OpenAI API
+        audio_buffer = io.BytesIO(audio_data)
+        audio_buffer.name = "audio.webm"  # OpenAI supports webm, mp3, mp4, etc.
+        
+        # Transcribe using Whisper
+        transcript = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_buffer,
+            language="en"  # Can be auto-detected by removing this parameter
+        )
+        
+        return jsonify({
+            "text": transcript.text,
+            "language": "en"
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/voice/settings', methods=['GET'])
+@login_required
+def voice_settings():
+    """Get available voice settings"""
+    return jsonify({
+        "voices": AVAILABLE_VOICES,
+        "speeds": {
+            "min": 0.25,
+            "max": 4.0,
+            "default": 1.0,
+            "presets": [
+                {"value": 0.75, "label": "Slow"},
+                {"value": 1.0, "label": "Normal"},
+                {"value": 1.25, "label": "Fast"},
+                {"value": 1.5, "label": "Very Fast"}
+            ]
+        },
+        "models": {
+            "tts": "tts-1",
+            "stt": "whisper-1"
+        }
+    }), 200
 
 if __name__ == '__main__':
     with app.app_context():

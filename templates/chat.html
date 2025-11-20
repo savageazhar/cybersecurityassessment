@@ -518,6 +518,218 @@
             color: var(--text-secondary);
         }
 
+        /* Voice Components */
+        .voice-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .voice-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .voice-btn.recording {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #ef4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .voice-recording {
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        #voiceVisualizer {
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .recording-text {
+            color: #ef4444;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .stop-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stop-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: var(--neon-green);
+            font-size: 24px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--neon-green);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .setting-group label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .voice-select,
+        .speed-slider {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .voice-select:focus,
+        .speed-slider:focus {
+            outline: none;
+            border-color: var(--neon-green);
+        }
+
+        .speed-slider {
+            accent-color: var(--neon-green);
+        }
+
+        .test-voice-btn {
+            background: linear-gradient(135deg, var(--neon-green) 0%, #00cc6f 100%);
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .test-voice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .setting-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--neon-green);
+        }
+
+        /* Speaker Button on Messages */
+        .speaker-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            margin-top: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .speaker-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+        }
+
+        .speaker-btn.playing {
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .navbar-menu {
@@ -550,6 +762,15 @@
 
             .model-selector {
                 flex: 1;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            #voiceVisualizer {
+                width: 200px;
             }
         }
     </style>
@@ -627,16 +848,72 @@
             <!-- Input -->
             <div class="chat-input-container">
                 <form class="chat-input-form" id="chatForm">
+                    <button type="button" class="voice-btn mic-btn" id="micBtn" title="Voice Input">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </button>
                     <textarea 
                         class="chat-input" 
                         id="messageInput" 
-                        placeholder="Type your message... (Shift+Enter for new line)"
+                        placeholder="Type your message or use voice... (Shift+Enter for new line)"
                         rows="1"
                         autocomplete="off"
                         required
                     ></textarea>
+                    <button type="button" class="voice-btn settings-btn" id="voiceSettingsBtn" title="Voice Settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6m5.2-13.2l-1.4 1.4m-6.4 6.4L7.8 19.2M23 12h-6m-6 0H1m18.2 5.2l-1.4-1.4m-6.4-6.4L7.8 4.8"></path>
+                        </svg>
+                    </button>
                     <button type="submit" class="send-button" id="sendButton">Send ⚡</button>
                 </form>
+                <!-- Voice Recording Indicator -->
+                <div class="voice-recording" id="voiceRecording" style="display: none;">
+                    <canvas id="voiceVisualizer" width="300" height="60"></canvas>
+                    <span class="recording-text">🎤 Recording...</span>
+                    <button type="button" class="stop-btn" id="stopRecordingBtn">Stop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Settings Modal -->
+    <div class="modal" id="voiceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎙️ Voice Settings</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Voice:</label>
+                    <select id="voiceSelect" class="voice-select">
+                        <option value="alloy">Alloy (Neutral)</option>
+                        <option value="echo">Echo (Warm)</option>
+                        <option value="fable">Fable (Storyteller)</option>
+                        <option value="onyx">Onyx (Deep)</option>
+                        <option value="nova">Nova (Friendly)</option>
+                        <option value="shimmer">Shimmer (Gentle)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Speed: <span id="speedValue">1.0x</span></label>
+                    <input type="range" id="speedSlider" min="0.5" max="2.0" step="0.1" value="1.0" class="speed-slider">
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="autoPlayToggle" checked>
+                        Auto-play AI responses
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <button id="testVoiceBtn" class="test-voice-btn">🔊 Test Voice</button>
+                </div>
             </div>
         </div>
     </div>
@@ -879,6 +1156,18 @@
                 conversationHistory.push({ role: 'assistant', content: fullResponse });
                 totalMessages++;
                 messageCount.textContent = totalMessages;
+                
+                // Add speaker button to AI message (defined later in voice section)
+                if (typeof addSpeakerButtonToMessage === 'function') {
+                    addSpeakerButtonToMessage(assistantMessageDiv, fullResponse);
+                }
+                
+                // Auto-play if enabled (TTS function defined later in voice section)
+                if (typeof voiceSettings !== 'undefined' && voiceSettings.autoPlay && typeof speakText === 'function') {
+                    setTimeout(() => {
+                        speakText(fullResponse);
+                    }, 500);
+                }
 
             } catch (error) {
                 cursor.remove();
@@ -903,6 +1192,296 @@
         });
 
         messageInput.focus();
+
+        // ========== VOICE FUNCTIONALITY ==========
+        
+        // Voice Settings
+        const voiceSettings = {
+            voice: 'alloy',
+            speed: 1.0,
+            autoPlay: true
+        };
+
+        // DOM Elements
+        const micBtn = document.getElementById('micBtn');
+        const voiceSettingsBtn = document.getElementById('voiceSettingsBtn');
+        const voiceRecording = document.getElementById('voiceRecording');
+        const stopRecordingBtn = document.getElementById('stopRecordingBtn');
+        const voiceModal = document.getElementById('voiceModal');
+        const closeModal = document.getElementById('closeModal');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+        const autoPlayToggle = document.getElementById('autoPlayToggle');
+        const testVoiceBtn = document.getElementById('testVoiceBtn');
+        const voiceVisualizer = document.getElementById('voiceVisualizer');
+        const voiceVisualizerCtx = voiceVisualizer.getContext('2d');
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let audioStream;
+        let animationId;
+
+        // Voice Visualizer Animation
+        function drawVoiceVisualizer(analyser) {
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            
+            function draw() {
+                animationId = requestAnimationFrame(draw);
+                analyser.getByteFrequencyData(dataArray);
+                
+                voiceVisualizerCtx.fillStyle = 'rgba(10, 14, 26, 0.3)';
+                voiceVisualizerCtx.fillRect(0, 0, voiceVisualizer.width, voiceVisualizer.height);
+                
+                const barWidth = (voiceVisualizer.width / bufferLength) * 2.5;
+                let barHeight;
+                let x = 0;
+                
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = (dataArray[i] / 255) * voiceVisualizer.height;
+                    
+                    const gradient = voiceVisualizerCtx.createLinearGradient(0, voiceVisualizer.height - barHeight, 0, voiceVisualizer.height);
+                    gradient.addColorStop(0, '#00ff88');
+                    gradient.addColorStop(1, '#00cc6f');
+                    
+                    voiceVisualizerCtx.fillStyle = gradient;
+                    voiceVisualizerCtx.fillRect(x, voiceVisualizer.height - barHeight, barWidth, barHeight);
+                    
+                    x += barWidth + 1;
+                }
+            }
+            
+            draw();
+        }
+
+        // Start Recording
+        async function startRecording() {
+            try {
+                audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(audioStream);
+                audioChunks = [];
+                
+                // Set up audio context for visualizer
+                const audioContext = new AudioContext();
+                const source = audioContext.createMediaStreamSource(audioStream);
+                const analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                source.connect(analyser);
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    await transcribeAudio(audioBlob);
+                    
+                    // Stop visualizer
+                    if (animationId) {
+                        cancelAnimationFrame(animationId);
+                    }
+                    
+                    // Stop all audio tracks
+                    audioStream.getTracks().forEach(track => track.stop());
+                };
+                
+                mediaRecorder.start();
+                micBtn.classList.add('recording');
+                voiceRecording.style.display = 'flex';
+                
+                // Start visualizer
+                drawVoiceVisualizer(analyser);
+                
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                alert('Could not access microphone. Please check permissions.');
+            }
+        }
+
+        // Stop Recording
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                micBtn.classList.remove('recording');
+                voiceRecording.style.display = 'none';
+            }
+        }
+
+        // Transcribe Audio (Speech-to-Text)
+        async function transcribeAudio(audioBlob) {
+            try {
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.webm');
+                
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                const response = await fetch('/voice/stt', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Transcription failed');
+                }
+                
+                const data = await response.json();
+                messageInput.value = data.text;
+                messageInput.focus();
+                
+                // Auto-resize textarea
+                messageInput.style.height = 'auto';
+                messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+                
+            } catch (error) {
+                console.error('Transcription error:', error);
+                alert('Voice transcription failed. Please try again.');
+            }
+        }
+
+        // Text-to-Speech
+        async function speakText(text) {
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                const response = await fetch('/voice/tts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        voice: voiceSettings.voice,
+                        speed: voiceSettings.speed
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('TTS failed');
+                }
+                
+                const data = await response.json();
+                const audioData = atob(data.audio);
+                const audioArray = new Uint8Array(audioData.length);
+                for (let i = 0; i < audioData.length; i++) {
+                    audioArray[i] = audioData.charCodeAt(i);
+                }
+                
+                const audioBlob = new Blob([audioArray], { type: 'audio/mpeg' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                
+                audio.play();
+                
+                // Cleanup
+                audio.onended = () => {
+                    URL.revokeObjectURL(audioUrl);
+                };
+                
+                return audio;
+                
+            } catch (error) {
+                console.error('TTS error:', error);
+                alert('Voice synthesis failed. Please try again.');
+            }
+        }
+
+        // Event Listeners
+        micBtn.addEventListener('click', () => {
+            if (micBtn.classList.contains('recording')) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
+
+        stopRecordingBtn.addEventListener('click', stopRecording);
+
+        voiceSettingsBtn.addEventListener('click', () => {
+            voiceModal.classList.add('active');
+        });
+
+        closeModal.addEventListener('click', () => {
+            voiceModal.classList.remove('active');
+        });
+
+        voiceModal.addEventListener('click', (e) => {
+            if (e.target === voiceModal) {
+                voiceModal.classList.remove('active');
+            }
+        });
+
+        voiceSelect.addEventListener('change', (e) => {
+            voiceSettings.voice = e.target.value;
+        });
+
+        speedSlider.addEventListener('input', (e) => {
+            voiceSettings.speed = parseFloat(e.target.value);
+            speedValue.textContent = `${e.target.value}x`;
+        });
+
+        autoPlayToggle.addEventListener('change', (e) => {
+            voiceSettings.autoPlay = e.target.checked;
+        });
+
+        testVoiceBtn.addEventListener('click', () => {
+            speakText('Hello! This is Kimi AI. I can speak in multiple voices at different speeds.');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + Shift + V: Toggle voice recording
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'v') {
+                e.preventDefault();
+                if (micBtn.classList.contains('recording')) {
+                    stopRecording();
+                } else {
+                    startRecording();
+                }
+            }
+        });
+
+        // Add speaker button to AI messages for manual playback
+        function addSpeakerButtonToMessage(messageContent, text) {
+            const speakerBtn = document.createElement('button');
+            speakerBtn.className = 'speaker-btn';
+            speakerBtn.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                Listen
+            `;
+            
+            speakerBtn.onclick = () => {
+                if (!speakerBtn.classList.contains('playing')) {
+                    speakerBtn.classList.add('playing');
+                    speakerBtn.textContent = 'Playing...';
+                    const audio = speakText(text);
+                    if (audio) {
+                        audio.onended = () => {
+                            speakerBtn.classList.remove('playing');
+                            speakerBtn.innerHTML = `
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                                Listen
+                            `;
+                        };
+                    }
+                }
+            };
+            
+            messageContent.appendChild(document.createElement('br'));
+            messageContent.appendChild(speakerBtn);
+        }
+
+        console.log('🎙️ Voice features loaded! Press Ctrl+Shift+V to start voice recording.');
     </script>
 </body>
 </html>
