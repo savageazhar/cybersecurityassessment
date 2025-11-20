@@ -370,14 +370,29 @@ def chat_stream():
                 stream = client.chat.completions.create(
                     model=model,
                     messages=conversation,
-                    stream=True
+                    stream=True,
+                    stream_options={"include_usage": True}
                 )
                 
+                usage_data = None
                 for chunk in stream:
+                    # Send content chunks
                     if chunk.choices and len(chunk.choices) > 0:
                         if chunk.choices[0].delta.content is not None:
                             content = chunk.choices[0].delta.content
                             yield f"data: {json.dumps({'content': content})}\n\n"
+                    
+                    # Capture usage data (comes in final chunk)
+                    if hasattr(chunk, 'usage') and chunk.usage is not None:
+                        usage_data = {
+                            "prompt_tokens": chunk.usage.prompt_tokens,
+                            "completion_tokens": chunk.usage.completion_tokens,
+                            "total_tokens": chunk.usage.total_tokens
+                        }
+                
+                # Send usage data at the end
+                if usage_data:
+                    yield f"data: {json.dumps({'usage': usage_data})}\n\n"
                 
                 yield f"data: {json.dumps({'done': True})}\n\n"
                 

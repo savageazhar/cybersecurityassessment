@@ -1,17 +1,24 @@
-# AI Chat - Intelligent Conversation Platform
+# Kimi AI - Futuristic AI Conversation Platform
 
 ## Overview
 
-A modern AI chat application with user authentication, OpenAI GPT integration, and a stunning futuristic design. The platform provides seamless access to multiple AI models for intelligent conversations and assistance.
+A cutting-edge AI chat application with user authentication, OpenAI GPT integration, and a stunning futuristic dark-neon interface. **Kimi AI** provides seamless access to multiple AI models for intelligent conversations and assistance with real-time streaming responses.
 
 The application features:
-- **Landing Page**: Modern AI-focused website with dark theme, neon green accents, and animated tech particles
-- **User Authentication**: Secure signup/login system with PostgreSQL database storage
-- **AI Chat Interface**: OpenAI GPT integration for intelligent assistance (protected by authentication)
+- **Landing Page**: Futuristic Kimi AI website with dark theme (#0a0e1a), neon green accents (#00ff88), and animated tech particles
+- **User Authentication**: Secure signup/login system with PostgreSQL database storage and 30-day persistent sessions
+- **Enhanced Chat Interface**: 
+  - Real-time streaming responses with typing cursor animation
+  - Markdown rendering with syntax highlighting (Marked.js + Highlight.js)
+  - Copy buttons for code blocks
+  - Token usage tracking and statistics display
+  - Message counter
+  - Clear chat functionality
+  - Glassmorphism design with particle background
 - **REST API**: Programmatic access for chat completions and streaming
 - **Multi-Model Support**: Choose from 6 different OpenAI models (GPT-4o, GPT-4.1 series, GPT-3.5)
-- **Streaming Responses**: Real-time AI responses with word-by-word display
-- **Token Usage Tracking**: Monitor API usage and costs
+- **Streaming Responses**: Real-time AI responses with word-by-word display and visual feedback
+- **Token Usage Tracking**: Live monitoring of API usage, message count, and model selection
 - **CORS Enabled**: Ready for cross-origin requests from web applications
 
 ## User Preferences
@@ -88,12 +95,21 @@ Preferred communication style: Simple, everyday language.
 
 #### Protected Pages (Require Login)
 5. **Chat Interface** (`GET /chat`)
-   - AI-powered trading assistant
-   - Model selector dropdown
-   - Real-time streaming responses
-   - Conversation history
+   - Futuristic Kimi AI themed interface (dark #0a0e1a, neon green #00ff88)
+   - Glassmorphism design with animated particle background
+   - Model selector dropdown (6 GPT models)
+   - Real-time streaming responses with typing cursor animation
+   - Markdown rendering with syntax highlighting (Marked.js + Highlight.js)
+   - Copy buttons for code blocks
+   - Conversation history management
+   - Clear chat functionality
+   - Live stats tracking:
+     - Message counter
+     - Token usage display
+     - Current model indicator
+   - Auto-resizing textarea input
+   - Shift+Enter for new line, Enter to send
    - Logout functionality
-   - User information display
 
 ### Database Schema
 
@@ -265,6 +281,8 @@ Preferred communication style: Simple, everyday language.
 - Font Awesome 6.4.0: Icons
 - GSAP 3.12.2: Animations
 - ScrollTrigger: Scroll animations
+- Marked.js 11.0.0: Markdown rendering
+- Highlight.js 11.9.0: Code syntax highlighting
 
 ### Infrastructure
 - **Hosting**: Replit
@@ -279,13 +297,21 @@ Preferred communication style: Simple, everyday language.
 - `SECRET_KEY`: Flask session secret (auto-generated in dev)
 
 ### Recent Updates (November 2025)
-- Transformed website from prop-trading to AI chat focus
-- Removed all crypto/trading/challenge references
-- Updated particles to show tech symbols (AI, GPT, ML, CODE, etc.) instead of trading symbols
-- Changed branding from PROPFIRM to AICHAT throughout
-- Updated hero section to "Intelligent AI Assistant — Powered by OpenAI"
-- Redesigned sections: Features (streaming, models, history), AI Models showcase, relevant stats
-- Updated login/signup pages with AI chat messaging
-- Maintained dark neon aesthetic (#0a0e1a background, #00ff88 accent)
+- **Complete Kimi AI Rebranding**: Transformed entire website from "AI Chat" to "Kimi AI" across all pages
+- Updated homepage branding with "KIMI AI" logo and futuristic messaging
+- Updated particle animations to display "KIMI" alongside AI, GPT, ML, CODE, DATA, TECH symbols
+- Redesigned login/signup/about pages with Kimi AI branding
+- **Enhanced Chat Interface**:
+  - Redesigned with futuristic dark theme (#0a0e1a background, #00ff88 neon green accents)
+  - Added glassmorphism design with animated particle background
+  - Implemented markdown rendering with Marked.js for rich text AI responses
+  - Added syntax highlighting with Highlight.js (GitHub Dark theme) for code blocks
+  - Added copy buttons for all code blocks with visual feedback
+  - Enhanced streaming with typing cursor animation during response generation
+  - Added live statistics bar showing message count, token usage, and current model
+  - Implemented clear chat functionality with confirmation
+  - Auto-resizing textarea with Shift+Enter for new lines
+  - Improved message styling with neon green gradients and glass effects
+- Maintained dark neon aesthetic (#0a0e1a background, #00ff88 accent) throughout
 - Preserved glassmorphism effects and GSAP animations
-- Updated footer with contact information and AI Chat branding
+- Updated footer with contact information and Kimi AI branding
