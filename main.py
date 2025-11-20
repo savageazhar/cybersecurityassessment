@@ -272,6 +272,7 @@ def get_models():
     }), 200
 
 @app.route('/chat', methods=['POST'])
+@csrf.exempt
 @login_required
 def chat():
     try:
@@ -334,6 +335,7 @@ def chat():
         }), 500
 
 @app.route('/chat/stream', methods=['POST'])
+@csrf.exempt
 @login_required
 def chat_stream():
     try:
