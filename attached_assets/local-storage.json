@@ -1,0 +1,170 @@
+{
+  "drizzle-version": "3.0.0",
+  "drizzle-global": {
+    "state": {
+      "showCounts": false,
+      "flatSchemas": false,
+      "dataFormats": null,
+      "expandSubviews": false,
+      "paginationType": "limit-offset"
+    },
+    "version": 0
+  },
+  "drizzle-db-c5c8d6d1434e63567fd8195cdcafbd17584346f42089dad593d994281eef2624": {
+    "state": {
+      "currentPage": "database-studio-roles",
+      "filterViews": {},
+      "isSidebarOpen": true,
+      "isShowSidebarContent": true,
+      "filtersVisible": false,
+      "sidebarWidth": 268,
+      "currentSchemaName": "public",
+      "currentTable": {
+        "id": "public.users",
+        "schema": "public",
+        "name": "users",
+        "type": "table",
+        "isRlsEnabled": false,
+        "columns": {
+          "id": {
+            "id": "public.users.id",
+            "schema": "public",
+            "table": "users",
+            "name": "id",
+            "isNotNull": true,
+            "isPrimary": true,
+            "isUnique": false,
+            "type": "serial",
+            "typeParams": {},
+            "hasDefaultValue": true,
+            "isDefaultAnExpression": false
+          },
+          "name": {
+            "id": "public.users.name",
+            "schema": "public",
+            "table": "users",
+            "name": "name",
+            "isNotNull": true,
+            "isPrimary": false,
+            "isUnique": false,
+            "type": "varchar",
+            "typeParams": {},
+            "isDefaultAnExpression": false
+          },
+          "email": {
+            "id": "public.users.email",
+            "schema": "public",
+            "table": "users",
+            "name": "email",
+            "isNotNull": true,
+            "isPrimary": false,
+            "isUnique": true,
+            "type": "varchar",
+            "typeParams": {},
+            "isDefaultAnExpression": false
+          },
+          "phone": {
+            "id": "public.users.phone",
+            "schema": "public",
+            "table": "users",
+            "name": "phone",
+            "isNotNull": true,
+            "isPrimary": false,
+            "isUnique": false,
+            "type": "varchar",
+            "typeParams": {},
+            "isDefaultAnExpression": false
+          },
+          "password_hash": {
+            "id": "public.users.password_hash",
+            "schema": "public",
+            "table": "users",
+            "name": "password_hash",
+            "isNotNull": true,
+            "isPrimary": false,
+            "isUnique": false,
+            "type": "varchar",
+            "typeParams": {},
+            "isDefaultAnExpression": false
+          },
+          "created_at": {
+            "id": "public.users.created_at",
+            "schema": "public",
+            "table": "users",
+            "name": "created_at",
+            "isNotNull": false,
+            "isPrimary": false,
+            "isUnique": false,
+            "type": "timestamp",
+            "typeParams": {},
+            "defaultValue": "CURRENT_TIMESTAMP",
+            "hasDefaultValue": true,
+            "isDefaultAnExpression": false
+          }
+        },
+        "indexes": {
+          "users_email_key": {
+            "id": "public.users.users_email_key",
+            "schema": "public",
+            "table": "users",
+            "name": "users_email_key",
+            "method": "btree",
+            "columns": [
+              "email"
+            ],
+            "isUnique": true
+          },
+          "users_pkey": {
+            "id": "public.users.users_pkey",
+            "schema": "public",
+            "table": "users",
+            "name": "users_pkey",
+            "method": "btree",
+            "columns": [
+              "id"
+            ],
+            "isUnique": true
+          }
+        },
+        "constraints": {
+          "users_email_key": {
+            "id": "public.users.users_email_key",
+            "schema": "public",
+            "table": "users",
+            "columns": [
+              "email"
+            ],
+            "type": "unique",
+            "name": "users_email_key"
+          },
+          "users_pkey": {
+            "id": "public.users.users_pkey",
+            "schema": "public",
+            "table": "users",
+            "columns": [
+              "id"
+            ],
+            "type": "primary",
+            "name": "users_pkey"
+          }
+        },
+        "foreignKeys": {},
+        "uniqueConstraints": {},
+        "compositePrimaryKeys": {},
+        "columnSettings": {},
+        "createdRecords": [],
+        "editedFields": [],
+        "filters": [],
+        "pagination": {
+          "limit": 50,
+          "offset": 0
+        },
+        "records": [],
+        "sort": null,
+        "historyId": "TMOFjEMshVgTrGpNHallD",
+        "executionTime": 334
+      }
+    },
+    "version": 1
+  }
+}
