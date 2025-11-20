@@ -101,11 +101,19 @@ def about():
     return render_template('about.html')
 
 @app.route('/login', methods=['GET', 'POST'])
+@csrf.exempt
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
     
     if request.method == 'POST':
+        # Validate CSRF token for form submissions
+        if not request.is_json:
+            csrf_token = request.form.get('csrf_token')
+            if not csrf_token:
+                flash('Security validation failed. Please try again.', 'error')
+                return redirect(url_for('login'))
+        
         data = request.get_json() if request.is_json else request.form
         app.logger.info(f"Login attempt - Email/Phone: {data.get('email_or_phone')}")
         email_or_phone = data.get('email_or_phone', '').strip()
@@ -147,11 +155,19 @@ def login():
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
+@csrf.exempt
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('chat_page'))
     
     if request.method == 'POST':
+        # Validate CSRF token for form submissions
+        if not request.is_json:
+            csrf_token = request.form.get('csrf_token')
+            if not csrf_token:
+                flash('Security validation failed. Please try again.', 'error')
+                return redirect(url_for('signup'))
+        
         data = request.get_json() if request.is_json else request.form
         app.logger.info(f"Signup attempt - Email: {data.get('email')}, Name: {data.get('name')}")
         name = data.get('name', '').strip()
