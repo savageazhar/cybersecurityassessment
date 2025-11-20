@@ -1,0 +1,88 @@
+2025-11-20 15:41:26.19
+c746f06c
+System
+crash loop detected
+2025-11-20 17:11:26.96
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:26.97
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:27.23
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:27.25
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:27.59
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:27.61
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:27.85
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:27.87
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:28.22
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:28.24
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:28.91
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:28.92
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:30.55
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:30.56
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:34.37
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:34.39
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:35.45
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:35.47
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:44.75
+52721471
+User
+Error: No application module specified.
+2025-11-20 17:11:44.76
+52721471
+System
+command finished with error [gunicorn --bind=0.0.0.0:5000 --reuse-port --workers=2 --timeout=120]: exit status 1
+2025-11-20 17:11:53.28
+52721471
+System
+crash loop detected
