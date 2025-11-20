@@ -15,7 +15,15 @@ The application features:
   - Message counter
   - Clear chat functionality
   - Glassmorphism design with particle background
-- **REST API**: Programmatic access for chat completions and streaming
+- **Professional Voice Features**: 
+  - Speech-to-text (STT) using OpenAI Whisper for voice input
+  - Text-to-speech (TTS) with 6 voice options for AI responses
+  - Real-time voice visualizer with waveform animation
+  - Auto-play toggle for automatic AI response playback
+  - Manual playback buttons on every AI message
+  - Voice settings modal (voice selection, speed control 0.25-4.0x)
+  - Keyboard shortcut (Ctrl+Shift+V) for quick voice recording
+- **REST API**: Programmatic access for chat completions, streaming, and voice features
 - **Multi-Model Support**: Choose from 6 different OpenAI models (GPT-4o, GPT-4.1 series, GPT-3.5)
 - **Streaming Responses**: Real-time AI responses with word-by-word display and visual feedback
 - **Token Usage Tracking**: Live monitoring of API usage, message count, and model selection
@@ -161,15 +169,35 @@ Preferred communication style: Simple, everyday language.
    - CSRF exempt (JSON API)
    - Server-Sent Events for real-time streaming
 
+#### Voice Features (Protected)
+6. **Text-to-Speech** (`POST /voice/tts`)
+   - Requires authentication
+   - CSRF protected
+   - Converts text to speech using OpenAI TTS
+   - Supports 6 voices: alloy, echo, shimmer, onyx, fable, nova
+   - Speed control: 0.25-4.0x
+   - Returns base64-encoded audio (MP3)
+
+7. **Speech-to-Text** (`POST /voice/stt`)
+   - Requires authentication
+   - CSRF protected
+   - Transcribes audio using OpenAI Whisper
+   - Accepts audio file (WebM, WAV, MP3, etc.)
+   - Returns transcribed text
+
+8. **Voice Settings** (`GET /voice/settings`)
+   - Read-only endpoint
+   - Returns available voices and voice options
+
 #### Utility
-6. **API Info** (`GET /api`)
+9. **API Info** (`GET /api`)
    - API documentation
 
-7. **Health Check** (`GET /health`)
-   - Service status monitoring
+10. **Health Check** (`GET /health`)
+    - Service status monitoring
 
-8. **Model Listing** (`GET /models`)
-   - Available OpenAI models
+11. **Model Listing** (`GET /models`)
+    - Available OpenAI models
 
 ### Static Assets
 
@@ -312,6 +340,17 @@ Preferred communication style: Simple, everyday language.
   - Implemented clear chat functionality with confirmation
   - Auto-resizing textarea with Shift+Enter for new lines
   - Improved message styling with neon green gradients and glass effects
+- **Professional Voice Features Implemented**:
+  - Backend: 3 secure voice endpoints (TTS, STT, settings) with CSRF protection
+  - Speech-to-Text: OpenAI Whisper API for voice input transcription
+  - Text-to-Speech: OpenAI TTS API with 6 voice options (alloy, echo, shimmer, onyx, fable, nova)
+  - Voice UI: Microphone button with real-time waveform visualizer using Canvas
+  - Auto-play: Toggle for automatic AI response playback
+  - Manual Playback: Speaker buttons automatically added to every AI message
+  - Settings Modal: Voice selection, speed control (0.25-4.0x), auto-play toggle, test voice button
+  - Keyboard Shortcuts: Ctrl+Shift+V for quick voice recording
+  - Security: All voice endpoints protected by @login_required with CSRF validation
+  - Resource Management: Proper cleanup of MediaRecorder streams, blob URLs, and audio elements
 - Maintained dark neon aesthetic (#0a0e1a background, #00ff88 accent) throughout
 - Preserved glassmorphism effects and GSAP animations
 - Updated footer with contact information and Kimi AI branding
