@@ -44,9 +44,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY_CYB_SEC")
-)
+# Initialize OpenAI client for voice services
+openai_api_key = os.environ.get("OPENAI_API_KEY")
+if openai_api_key:
+    client = OpenAI(api_key=openai_api_key)
+    OPENAI_AVAILABLE = True
+else:
+    client = None
+    OPENAI_AVAILABLE = False
 
 # Initialize Google GenAI client for Nano Banana (image generation)
 nano_banana_api_key = os.environ.get("GO_BANAN_API_KEY")
@@ -314,6 +319,9 @@ def get_models():
 @login_required
 def chat():
     try:
+        if not OPENAI_AVAILABLE:
+            return jsonify({"error": "Chat services are not configured. Missing OPENAI_API_KEY."}), 503
+        
         data = request.get_json()
         
         if not data or 'message' not in data:
@@ -377,6 +385,9 @@ def chat():
 @login_required
 def chat_stream():
     try:
+        if not OPENAI_AVAILABLE:
+            return jsonify({"error": "Chat services are not configured. Missing OPENAI_API_KEY."}), 503
+        
         data = request.get_json()
         
         if not data or 'message' not in data:
@@ -453,10 +464,14 @@ def chat_stream():
 
 # Voice Endpoints
 @app.route('/voice/tts', methods=['POST'])
+@csrf.exempt
 @login_required
 def text_to_speech():
     """Convert text to speech using OpenAI TTS"""
     try:
+        if not OPENAI_AVAILABLE:
+            return jsonify({"error": "Voice services are not configured. Missing OPENAI_API_KEY."}), 503
+        
         data = request.get_json()
         
         if not data or 'text' not in data:
@@ -498,10 +513,14 @@ def text_to_speech():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/voice/stt', methods=['POST'])
+@csrf.exempt
 @login_required
 def speech_to_text():
     """Convert speech to text using OpenAI Whisper"""
     try:
+        if not OPENAI_AVAILABLE:
+            return jsonify({"error": "Voice services are not configured. Missing OPENAI_API_KEY."}), 503
+        
         if 'audio' not in request.files:
             return jsonify({"error": "No audio file provided"}), 400
         
@@ -552,10 +571,26 @@ def voice_settings():
         "models": {
             "tts": "tts-1",
             "stt": "whisper-1"
+        },
+        "available": OPENAI_AVAILABLE
+    }), 200
+
+@app.route('/api/status', methods=['GET'])
+def api_status():
+    """Get API configuration status"""
+    return jsonify({
+        "openai": {
+            "available": OPENAI_AVAILABLE,
+            "key_present": bool(os.environ.get("OPENAI_API_KEY"))
+        },
+        "google_gemini": {
+            "available": NANO_BANANA_AVAILABLE,
+            "key_present": bool(os.environ.get("GO_BANAN_API_KEY"))
         }
     }), 200
 
 @app.route('/image/generate', methods=['POST'])
+@csrf.exempt
 @login_required
 def generate_image():
     """Generate image using Google Nano Banana (Gemini 2.5 Flash Image)"""
@@ -613,6 +648,7 @@ def generate_image():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/image/edit', methods=['POST'])
+@csrf.exempt
 @login_required
 def edit_image():
     """Edit image using Google Nano Banana with text prompts"""
