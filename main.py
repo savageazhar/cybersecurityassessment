@@ -589,6 +589,18 @@ def api_status():
         }
     }), 200
 
+@app.route('/image/settings', methods=['GET'])
+@login_required
+def image_settings():
+    """Get image generation settings and availability"""
+    return jsonify({
+        "available": NANO_BANANA_AVAILABLE,
+        "model": "gemini-2.5-flash-image",
+        "capabilities": ["text-to-image", "image-editing", "multi-image-fusion"],
+        "max_size": "1024x1024",
+        "formats": ["image/png", "image/jpeg"]
+    }), 200
+
 @app.route('/image/generate', methods=['POST'])
 @csrf.exempt
 @login_required
