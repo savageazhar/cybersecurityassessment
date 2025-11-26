@@ -1,39 +1,24 @@
-# OpenAI Chat API
+# AI Gateway
 
-A REST API that provides access to OpenAI GPT models using your own OpenAI API key.
+A powerful, multi-provider AI gateway with a modern UI and chat history.
 
 ## Features
 
-- Multiple OpenAI GPT models: gpt-4o, gpt-4o-mini, gpt-4-turbo, gpt-4, gpt-3.5-turbo, o1-preview, o1-mini
-- Regular chat completions with conversation history
-- Streaming responses for real-time output
-- Token usage tracking
-- CORS enabled for cross-origin requests
+- **Multi-Provider AI:** Seamlessly switch between OpenAI (GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo) and Google (Gemini Pro) models.
+- **Modern UI:** A clean and intuitive chat interface with a chat history sidebar.
+- **Chat History:** Your conversations are saved and can be revisited at any time.
+- **User Authentication:** Secure user authentication and registration.
+- **Streaming Responses:** Real-time output for a smooth and responsive experience.
+- **CORS Enabled:** Cross-origin requests are enabled for easy integration.
 
 ## API Endpoints
 
 ### API Information
 ```bash
-GET /
+GET /api
 ```
 
 Returns API information and available endpoints.
-
-**Response:**
-```json
-{
-  "name": "OpenAI Chat API",
-  "version": "1.0.0",
-  "description": "REST API for OpenAI GPT models",
-  "endpoints": {
-    "GET /health": "Check API health status",
-    "GET /models": "List available models",
-    "POST /chat": "Create chat completion",
-    "POST /chat/stream": "Create streaming chat completion"
-  },
-  "documentation": "See README.md for usage examples"
-}
-```
 
 ### Health Check
 ```bash
@@ -42,164 +27,58 @@ GET /health
 
 Returns the API status.
 
-**Response:**
-```json
-{
-  "status": "healthy",
-  "service": "OpenAI Chat API",
-  "provider": "OpenAI"
-}
-```
-
 ### List Available Models
 ```bash
 GET /models
 ```
 
-Returns all available GPT models.
-
-**Response:**
-```json
-{
-  "models": ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo", "o1-preview", "o1-mini"],
-  "default": "gpt-4o-mini"
-}
-```
+Returns all available models from OpenAI and Google.
 
 ### Chat Completion
 ```bash
-POST /chat
+POST /api/chat
 ```
 
-Send a message and get a response from the AI.
-
-**Request Body:**
-```json
-{
-  "message": "Your message here",
-  "model": "gpt-4o-mini",
-  "messages": []
-}
-```
-
-**Parameters:**
-- `message` (required): The user's message
-- `model` (optional): Model to use (default: "gpt-4o-mini")
-- `messages` (optional): Conversation history array
-
-**Response:**
-```json
-{
-  "response": "AI response here",
-  "model": "gpt-4o-mini",
-  "conversation": [
-    {"role": "user", "content": "Your message"},
-    {"role": "assistant", "content": "AI response"}
-  ],
-  "usage": {
-    "prompt_tokens": 12,
-    "completion_tokens": 10,
-    "total_tokens": 22
-  }
-}
-```
+Send a message and get a response from the selected AI model.
 
 ### Streaming Chat
 ```bash
-POST /chat/stream
+POST /api/chat/stream
 ```
 
 Get streaming responses in real-time (Server-Sent Events).
 
-**Request Body:**
-```json
-{
-  "message": "Your message here",
-  "model": "gpt-4o-mini",
-  "messages": []
-}
-```
-
-**Response:** Server-Sent Events stream
-```
-data: {"content": "Hello"}
-data: {"content": " there"}
-data: {"done": true}
-```
-
-## Usage Examples
-
-### Basic Chat
+### Get Chat History
 ```bash
-curl -X POST http://your-repl-url/chat \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "What is the capital of France?",
-    "model": "gpt-4o-mini"
-  }'
+GET /api/chat/history
 ```
 
-### With Conversation History
+Returns the chat history for the authenticated user.
+
+## `curl` Examples
+
+### Login
 ```bash
-curl -X POST http://your-repl-url/chat \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "And what about Spain?",
-    "model": "gpt-4o-mini",
-    "messages": [
-      {"role": "user", "content": "What is the capital of France?"},
-      {"role": "assistant", "content": "The capital of France is Paris."}
-    ]
-  }'
+curl -X POST -H "Content-Type: application/json" -d '{"email_or_phone": "test@example.com", "password": "password"}' http://localhost:5000/login
 ```
 
-### Streaming Response
+### Chat
 ```bash
-curl -X POST http://your-repl-url/chat/stream \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "Write a short poem",
-    "model": "gpt-4o-mini"
-  }'
-```
-
-## Available Models
-
-- `gpt-4o` - Most capable GPT-4 model, great for complex tasks
-- `gpt-4o-mini` - Fast and affordable, recommended for most uses (default)
-- `gpt-4-turbo` - High-performance GPT-4 variant
-- `gpt-4` - Standard GPT-4 model
-- `gpt-3.5-turbo` - Fast and cost-effective
-- `o1-preview` - Advanced reasoning model for complex problems
-- `o1-mini` - Faster reasoning model
-
-## Error Handling
-
-All endpoints return proper HTTP status codes:
-- `200`: Success
-- `400`: Bad request (missing required fields)
-- `500`: Server error
-
-Error responses include a descriptive message:
-```json
-{
-  "error": "Error description here"
-}
+curl -X POST -H "Content-Type: application/json" -b "cookie.txt" -d '{"message": "Hello, world!", "model": "gpt-4o"}' http://localhost:5000/api/chat
 ```
 
 ## Running Locally
 
-The API runs on port 5000:
+The application runs on port 5000:
 ```bash
-gunicorn --bind 0.0.0.0:5000 --workers 2 --timeout 120 main:app
+python main.py
 ```
 
 ## Configuration
 
-The API requires the `OPENAI_API_KEY_CYB_SEC` environment variable to be set with your OpenAI API key.
+The application requires the following environment variables to be set:
 
-## Notes
-
-- Uses your own OpenAI API key for secure access
-- CORS is enabled for all origins
-- Production-ready with Gunicorn WSGI server
+- `SECRET_KEY`: A secret key for the Flask application.
+- `DATABASE_URL`: The URL for the database (e.g., `sqlite:///db.sqlite3`).
+- `OPENAI_API_KEY`: Your OpenAI API key.
+- `GEMINI_API_KEY`: Your Google Gemini API key.

@@ -1,4 +1,4 @@
-from main import User
+from app.models import User
 
 def test_user_creation(user):
     assert user.name == "Test User"

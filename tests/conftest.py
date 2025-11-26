@@ -2,26 +2,30 @@ import os
 # Set default database URL for testing before importing main
 os.environ.setdefault('DATABASE_URL', 'sqlite:///:memory:')
 # Set dummy OpenAI API key for testing
-os.environ.setdefault('OPENAI_API_KEY_CYB_SEC', 'dummy-key')
+os.environ['OPENAI_API_KEY'] = 'dummy-key'
+os.environ['GEMINI_API_KEY'] = 'AIzaSyA_... (rest of key)'
+
+import sys
+from os.path import abspath, dirname, join
+sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 
 import pytest
-from main import app as flask_app
-from main import db as flask_db
-from main import User
+from app import create_app, db as flask_db
+from app.models import User
 
 @pytest.fixture
 def app():
-    # Update config for testing
-    flask_app.config.update({
+    app = create_app()
+    app.config.update({
         'TESTING': True,
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
         'WTF_CSRF_ENABLED': False,  # Disable CSRF for easier testing
         'SERVER_NAME': 'localhost.localdomain' # helps with url_for
     })
 
-    with flask_app.app_context():
+    with app.app_context():
         flask_db.create_all()
-        yield flask_app
+        yield app
         flask_db.session.remove()
         flask_db.drop_all()
 
@@ -31,7 +35,8 @@ def client(app):
 
 @pytest.fixture
 def db(app):
-    return flask_db
+    with app.app_context():
+        yield flask_db
 
 @pytest.fixture
 def user(app, db):
