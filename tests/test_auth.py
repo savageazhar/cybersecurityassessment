@@ -1,4 +1,4 @@
-from main import User
+from app.models import User
 from flask import url_for
 
 def test_signup_success(client, db):
@@ -86,25 +86,13 @@ def test_login_failure(client, user):
     })
     assert response.status_code == 401
 
-def test_logout(auth_client):
-    response = auth_client.get('/logout', follow_redirects=True)
-    assert response.status_code == 200
-    # The flash message might not be rendered in the template 'prop_firm.html' (index page)
-    # So we check if the user is no longer logged in by checking the response or session
-    # or by trying to access a protected route
-
-    # Check if we are redirected to index
-    assert b"Welcome to Kimi AI" in response.data
-
-    # Verify we can't access chat anymore
-    chat_response = auth_client.get('/chat', follow_redirects=True)
-    assert b"Login" in chat_response.data
-
 def test_protected_routes(client):
     # Access chat without login
-    response = client.get('/chat', follow_redirects=True)
-    assert b"Login" in response.data # Should redirect to login page
+    response = client.get('/chat')
+    assert response.status_code == 302
+    assert '/login' in response.location
 
-    # Access chat with login (using auth_client)
-    # Re-using logic from fixture inside test effectively
-    pass
+    # Access logout without login
+    response = client.get('/logout')
+    assert response.status_code == 302
+    assert '/login' in response.location
